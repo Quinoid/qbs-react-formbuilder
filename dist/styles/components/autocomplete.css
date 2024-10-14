@@ -1,0 +1,522 @@
+body * {
+  box-sizing: border-box;
+}
+:root {
+  --grey-dark: #4a4a4a;
+  --grey-light: #d3d3d3;
+  --blue-navy: #001f3f;
+  --input-disabled: #a9a9a9;
+  --error-light: #f08080;
+  --error-extra-light: #fddede;
+  --success: #28a745;
+  --success-light: #d4edda;
+  --blue-light: #add8e6;
+}
+:root {
+  --blue-navy: #001f3f;
+  --table-hover: #your-hover-color; /* Replace with your actual color code */
+}
+
+.custom-spinner {
+  width: 24px !important; /* w-6 */
+  height: 24px; /* h-6 */
+  color: transparent; /* text-table-hover */
+  fill: var(--blue-navy); /* fill-blue-navy */
+  animation: spin 1s linear infinite; /* animate-spin */
+  width: 15px;
+  position: relative;
+  top: 1px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.textfield,
+.textfield-big {
+  outline: none;
+  color: var(--grey-dark);
+  border-color: var(--grey-light);
+  background-color: white;
+}
+
+.textfield:focus,
+.textfield-big:focus {
+  border-color: var(--blue-navy);
+}
+
+.textfield:disabled,
+.textfield-big:disabled {
+  color: var(--input-disabled);
+}
+
+.textfield-error,
+.textfield-big-error {
+  outline: none;
+  color: var(--error-light) !important;
+  border-color: var(--error-light) !important;
+  background-color: var(--error-extra-light) !important ;
+}
+
+.textfield-error::placeholder,
+.textfield-big-error::placeholder {
+  color: var(--error-light);
+}
+
+.textfield-success {
+  outline: none;
+  color: var(--success);
+  border-color: var(--success);
+  background-color: var(--success-light);
+}
+
+.textfield-success:focus {
+  ring-width: 0;
+}
+
+.textfield-success::placeholder {
+  color: var(--success);
+}
+
+.textfield-editable {
+  outline: none;
+  color: var(--grey-dark);
+  border-color: var(--blue-navy);
+  background-color: var(--blue-light);
+}
+
+.textfield-editable::placeholder {
+  color: var(--grey-dark);
+}
+
+.qbs-autocomplete-suggestions {
+  position: absolute;
+  height: auto;
+  width: 100%;
+  padding: 8px; /* Corresponding to p-1.5 in Tailwind */
+  z-index: 99;
+  margin-top: 4px;
+  margin-bottom: 0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+}
+.qbs-autocomplete-suggestions.bottom {
+  top: 100%; /* Position below the input */
+  /* Other styling */
+}
+
+.qbs-autocomplete-suggestions.top {
+  bottom: 100%; /* Position above the input */
+  /* Other styling */
+}
+.qbs-autocomplete-suggestions-item {
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  width: 100%;
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
+.qbs-autocomplete-suggestions-item:hover {
+  background: #f8f8f8;
+  border-radius: 6px;
+}
+
+/* When value.id is equal to suggestion.id */
+.is-selected {
+  border-radius: 6px;
+  background: var(--neutrals-grey-20, #f4f4f4);
+}
+
+/* When value.id is NOT equal to suggestion.id */
+.qbs-autocomplete-suggestions-item .is-not-selected:hover {
+  background-color: #f1f5f9; /* Replace with actual color code for 'hover:bg-table-hover' */
+}
+
+.qbs-autocomplete-notfound {
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.qbs-autocomplete-close-icon {
+  position: absolute;
+  top: calc(50% - 7px);
+  right: 2px; /* right-1 */
+  padding-left: 0.25rem; /* px-1 */
+  padding-right: 0.25rem; /* px-1 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white; /* bg-white */
+}
+.qbs-textfield-default {
+  width: 100%;
+  position: relative;
+  padding-right: 8px;
+  min-height: 36px;
+  height: 36px;
+  border-radius: 6px;
+  padding-left: 8px;
+  border: 1px solid #d6d8dc;
+  background: #fff;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  color: #313131;
+}
+
+.qbs-textfield-default::placeholder {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.qbs-autocomplete-close-icon button:focus-within {
+  outline: none;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.autoWidth {
+  width: auto;
+}
+.icon-button {
+  background: transparent;
+  border: none;
+  display: inline-flex;
+  cursor: pointer;
+  padding: 0px 1px;
+}
+.labels {
+  font-size: 12px;
+}
+.dropdown-search-input {
+  min-width: -webkit-fill-available;
+  border-radius: 6px;
+  border: 1px solid var(--border-card-color-default, #d6d8dc);
+  background: var(--surface-input-bg-color-default, #fff);
+  color: #313131;
+  font-size: 14px;
+  height: 36px;
+  padding: 0px 8px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  padding-left: 32px;
+}
+.qbs-autocomplete-suggestions-sub {
+  position: relative;
+  overflow: auto;
+  max-height: 192px;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.qbs-autocomplete-listitem-container {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+ul {
+  list-style-type: none;
+}
+
+.qbs-core-search-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 4px);
+  align-self: stretch;
+  margin-bottom: 4px;
+}
+.selected-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
+  margin: 0;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 6px;
+  border: 1px solid rgba(231, 100, 88, 0.1);
+  background: rgba(231, 100, 88, 0.1);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  color: #e76458;
+  gap: 6px;
+  height: 22px;
+}
+
+.remove-item-btn {
+  background-color: transparent;
+  border: none;
+  color: #e76458;
+  cursor: pointer;
+}
+
+.remove-item-btn:hover {
+  color: #e76458;
+}
+
+.selected-items-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  position: absolute;
+  left: 8px;
+  z-index: 99;
+  top: 6.5px;
+  flex-wrap: wrap;
+}
+
+.selected-item-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  margin: 0;
+  border-radius: 6px;
+  background: #c63a3a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  color: #fff;
+  height: 22px;
+}
+
+.loadMoreSection {
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+  padding: 8px;
+}
+.loadMoreSection p {
+  color: #336cfc;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 0;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  background-color: #ddd;
+}
+
+.qbs-autocomplete-suggestions-item.is-selected {
+  color: #e76458;
+  background: #f8f8f8;
+}
+
+span.dropdown-search-icon {
+  position: absolute;
+  left: 8px;
+  top: 10px;
+}
+
+.dropdown-search-input:focus {
+  outline: none;
+  border: 1px solid #222;
+}
+
+.qbs-autocomplete-checkbox-container {
+  gap: 8px;
+  padding: 6px 8px;
+  align-items: start;
+}
+
+.qbs-autocomplete-checkbox-container .qbs-autocomplete-suggestions-item {
+  padding: 0;
+  pointer-events: none;
+}
+
+.qbs-autocomplete-checkbox-container:hover {
+  background: #f8f8f8;
+  border-radius: 6px;
+}
+
+.qbs-autocomplete-checkbox-container.is-selected {
+  background: #f8f8f8;
+  border-radius: 6px;
+}
+
+.qbs-autocomplete-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qbs-autocomplete-checkbox input {
+  opacity: 0;
+}
+
+.qbs-autocomplete-checkbox input ~ label {
+  position: absolute;
+  border-radius: 3px;
+  border: 1px solid #999696;
+  width: 16px;
+  height: 16px;
+  top: 3px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.qbs-autocomplete-checkbox input ~ label svg {
+  opacity: 0;
+  transition: all 0.2s ease;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 9px;
+  height: 9px;
+}
+
+.qbs-autocomplete-checkbox input:checked ~ label {
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  background: #e76458;
+  border-color: #e76458;
+}
+.qbs-autocomplete-checkbox input:checked ~ label svg {
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+.action_label {
+  font-size: 14px;
+  color: #4c7ad6;
+}
+/* Tooltip.css */
+/* .tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  visibility: hidden;
+  width: max-content;
+  background-color: black;
+  color: white;
+  text-align: center;
+  max-width: 150px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: visibility 0.2s ease-in-out;
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip-wrapper:hover .tooltip-content {
+  visibility: visible;
+} */
+.qbs-table-tooltip {
+  position: relative;
+  display: contents;
+  cursor: pointer;
+}
+
+.qbs-table-tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 6px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  max-width: 300px;
+}
+
+.qbs-table-tooltip.up .tooltiptext {
+  bottom: 125%;
+  left: 0%;
+}
+
+.qbs-table-tooltip.down .tooltiptext {
+  top: 125%;
+  right: 0px;
+  left: auto;
+}
+
+.qbs-table-tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.qbs-table-tooltip .tooltiptext::after {
+  content: '';
+  position: absolute;
+  border-width: 5px;
+  border-style: solid;
+}
+
+.qbs-table-tooltip.up .tooltiptext::after {
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-color: #000 transparent transparent transparent;
+}
+
+.qbs-table-tooltip.down .tooltiptext::after {
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-color: transparent transparent #000 transparent;
+}
