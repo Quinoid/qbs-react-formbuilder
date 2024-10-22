@@ -1,6 +1,6 @@
 "use strict";
 // import React from 'react';
-// const Tooltip: React.FC<any> = ({ children, title }) => {
+// const Tooltip: React.FC<any> = ({ useRef, useState }) => {
 //   return (
 //     <div className="tooltip-wrapper">
 //       {children}
@@ -33,20 +33,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // export default Tooltip;
-var react_1 = __importStar(require("react"));
-var ToolTip = function (_a) {
-    var title = _a.title, children = _a.children;
-    var _b = (0, react_1.useState)('bottom-position'), dropdownPosition = _b[0], setDropdownPosition = _b[1];
-    var dropRef = (0, react_1.useRef)(null);
-    var menuButtonRef = (0, react_1.useRef)(null);
-    var adjustDropdownPosition = function () {
+const react_1 = __importStar(require("react"));
+const ToolTip = ({ title, children }) => {
+    const [dropdownPosition, setDropdownPosition] = (0, react_1.useState)('bottom-position');
+    const dropRef = (0, react_1.useRef)(null);
+    const menuButtonRef = (0, react_1.useRef)(null);
+    const adjustDropdownPosition = () => {
         var _a;
         if (menuButtonRef.current && dropRef.current) {
-            var inputBoxRect = (_a = menuButtonRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
-            var viewportHeight = window.innerHeight;
-            var spaceAbove = inputBoxRect.top;
-            var spaceBelow = viewportHeight - inputBoxRect.bottom;
-            console.log(spaceAbove, spaceBelow);
+            const inputBoxRect = (_a = menuButtonRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const spaceAbove = inputBoxRect.top;
+            const spaceBelow = viewportHeight - inputBoxRect.bottom;
             if (spaceAbove > spaceBelow) {
                 if (spaceAbove > 90 && spaceBelow < 120) {
                     setDropdownPosition('top-position');
@@ -56,7 +54,7 @@ var ToolTip = function (_a) {
                 }
             }
             else {
-                var diff = spaceBelow - spaceAbove;
+                const diff = spaceBelow - spaceAbove;
                 if (spaceAbove > 90 && spaceBelow > 90 && diff < 90) {
                     setDropdownPosition('top-position');
                 }
@@ -66,9 +64,9 @@ var ToolTip = function (_a) {
             }
         }
     };
-    return (react_1.default.createElement("div", { className: "qbs-table-tooltip ".concat(dropdownPosition == 'bottom-position' ? 'down' : 'up', " ") },
-        react_1.default.createElement("span", { ref: menuButtonRef, style: { display: 'flex' }, onMouseEnter: function () { return adjustDropdownPosition(); } }, children),
-        react_1.default.createElement("span", { ref: dropRef, className: "tooltiptext " }, title)));
+    return (react_1.default.createElement("div", { className: `qbs-table-tooltip ${dropdownPosition == 'bottom-position' ? 'down' : 'up'} ` },
+        react_1.default.createElement("span", { ref: menuButtonRef, style: { display: 'flex' }, onMouseEnter: () => adjustDropdownPosition() }, children),
+        react_1.default.createElement("span", { ref: dropRef, className: `tooltiptext ` }, title)));
 };
 exports.default = ToolTip;
 //# sourceMappingURL=tootltip.js.map

@@ -1,11 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { AutoSuggestionInputProps } from './commontypes';
 import { useSuggestions } from './utilities/autosuggestions';
@@ -541,7 +534,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoSuggestionInputProps>(
         {/* Displaying Validation Error */}
         {errors && (
           <div
-            className="text-error text-error-label mt-[1px]"
+            className="text-error text-error-label mt-[1px] textfield-error"
             data-testid="autocomplete-error"
           >
             {errors.message}

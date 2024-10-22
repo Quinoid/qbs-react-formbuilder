@@ -1,5 +1,5 @@
 // import React from 'react';
-// const Tooltip: React.FC<any> = ({ children, title }) => {
+// const Tooltip: React.FC<any> = ({ useRef, useState }) => {
 //   return (
 //     <div className="tooltip-wrapper">
 //       {children}
@@ -22,7 +22,6 @@ const ToolTip: React.FC<any> = ({ title, children }) => {
 
       const spaceAbove = inputBoxRect.top;
       const spaceBelow = viewportHeight - inputBoxRect.bottom;
-      console.log(spaceAbove, spaceBelow);
       if (spaceAbove > spaceBelow) {
         if (spaceAbove > 90 && spaceBelow < 120) {
           setDropdownPosition('top-position');

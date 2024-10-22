@@ -25,11 +25,11 @@ Before you can use the `AutoComplete` component, ensure you've imported it prope
 
 ```bash
 
-npm install qbs-core
+npm install qbs-form-builder
 ```
 
 ```jsx
-import {AutoComplete} from 'qbs-core';
+import {AutoComplete} from 'qbs-form-builder';
 
 function ExampleComponent() {
   return (

@@ -60,7 +60,7 @@ body * {
   outline: none;
   color: var(--error-light) !important;
   border-color: var(--error-light) !important;
-  background-color: var(--error-extra-light) !important ;
+  /* background-color: var(--error-extra-light) !important ; */
 }
 
 .textfield-error::placeholder,

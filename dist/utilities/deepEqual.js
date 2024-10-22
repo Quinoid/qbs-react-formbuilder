@@ -26,7 +26,7 @@ function deepEqual(value1, value2) {
                 return false;
             }
             // Deep compare each element
-            for (var i = 0; i < value1.length; i++) {
+            for (let i = 0; i < value1.length; i++) {
                 if (!deepEqual(value1[i], value2[i])) {
                     return false;
                 }
@@ -35,13 +35,12 @@ function deepEqual(value1, value2) {
         }
         else {
             // Compare object keys and values
-            var keys1 = Object.keys(value1);
-            var keys2 = new Set(Object.keys(value2));
+            const keys1 = Object.keys(value1);
+            const keys2 = new Set(Object.keys(value2));
             if (keys1.length !== keys2.size) {
                 return false;
             }
-            for (var _i = 0, keys1_1 = keys1; _i < keys1_1.length; _i++) {
-                var key = keys1_1[_i];
+            for (const key of keys1) {
                 if (!keys2.has(key) || !deepEqual(value1[key], value2[key])) {
                     return false;
                 }
