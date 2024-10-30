@@ -4,3 +4,4 @@ export { default as CustomAutoComplete } from './AutoComplete';
 export { default as InlineAutoComplete } from './InlineAutoComplete';
 export { default as FormBuilder } from './formBuilder/formbuilder';
 export type { AutoSuggestionInputProps } from './commontypes';
+export { default as DynamicFormBuilder } from './formBuilder/DynamicForm';

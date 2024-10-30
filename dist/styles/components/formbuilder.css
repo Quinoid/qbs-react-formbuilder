@@ -73,7 +73,7 @@
   display: flex;
   justify-content: center; /* Horizontally center */
   align-items: center; /* Vertically center */
-  height: 100vh; /* Full viewport height to ensure centering */
+  margin-top: 200px;
 }
 .section-item {
   display: flex;
@@ -123,4 +123,9 @@
   padding: 10px;
   background-color: #f0f8ff;
   border-bottom: 1px solid #e6e8ea;
+}
+.popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

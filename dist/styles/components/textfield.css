@@ -3,7 +3,7 @@
 .textfield-container {
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
+  width: 100%;
 }
 
 .textfield-label {
@@ -22,14 +22,20 @@
   outline: none;
 }
 
-.textfield-input:focus {
-  border-color: #007bff; /* Focus color */
+.textarea-input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  outline: none;
 }
-
 .textfield-input-error {
   border-color: #e74c3c; /* Error border color */
 }
-
+.date-picker-input-error {
+  border-color: #e74c3c !important; /* Error border color */
+}
 .textfield-error {
   color: #e74c3c;
   font-size: 12px;
@@ -39,4 +45,49 @@
 .textfield-input:disabled {
   background-color: #f5f5f5;
   cursor: not-allowed;
+}
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.file-upload-label:hover {
+  background-color: #f0f8ff; /* Light background on hover */
+}
+
+.upload-icon {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 24px; /* Adjust icon size */
+}
+
+.upload-text {
+  font-weight: bold; /* Make the text bold */
+}
+
+.disabled {
+  opacity: 0.6; /* Make the label look disabled */
+  pointer-events: none; /* Disable interactions */
+}
+
+.uploaded-file-info {
+  margin-top: 10px; /* Space between file info and upload area */
+}
+
+.remove-file-button {
+  margin-top: 5px;
+  color: #dc3545; /* Bootstrap danger color for remove button */
+  border: none;
+  background: none;
+  cursor: pointer;
 }

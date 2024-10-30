@@ -35,6 +35,7 @@ const CheckBox_1 = __importDefault(require("../components/CheckBox"));
 const DialogPopup_1 = __importDefault(require("../components/DialogPopup"));
 const Select_1 = __importDefault(require("../components/Select"));
 const Textfield_1 = __importDefault(require("../components/Textfield"));
+const expandableTextArea_1 = __importDefault(require("../components/expandableTextArea"));
 // Zod Schema for form validation
 const createFieldSchema = zod_2.z
     .object({
@@ -77,11 +78,12 @@ const allowedFileTypes = [
     { value: 'application/msword', label: 'Word Document' },
 ];
 const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, data, }) => {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d;
     // Use the useForm hook and bind it to the Zod schema using zodResolver
     const { register, handleSubmit, formState: { errors }, reset, control, setValue, watch, } = (0, react_hook_form_1.useForm)({
         resolver: (0, zod_1.zodResolver)(createFieldSchema),
     });
+    const textareaRef = (0, react_1.useRef)(null);
     // Handle form submission
     const onSubmit = (data) => {
         onSubmitField(data);
@@ -118,14 +120,20 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
         setValue('fileTypes', e, { shouldValidate: true });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    const handleTextareaChange = (value) => {
+        setValue('fieldTitle', value, { shouldValidate: true });
+    };
     return (react_1.default.createElement(DialogPopup_1.default, { isOpen: openField, onClose: () => setOpenField(false), actionLabel: edit ? 'Upadte' : 'Create', title: edit ? 'Update Field' : 'Add Field', onSubmit: handleSubmit(onSubmit) },
         react_1.default.createElement("div", { className: "popup-form" },
             react_1.default.createElement(Select_1.default, Object.assign({ label: "Select an option", required: true, options: options }, register('fieldType'), { error: (_a = errors.fieldType) === null || _a === void 0 ? void 0 : _a.message })),
-            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "fieldTitle", placeholder: "Section Title", required: true, label: "Field Description" }, register('fieldTitle'), { error: (_b = errors.fieldTitle) === null || _b === void 0 ? void 0 : _b.message })),
+            react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: "fileTypes", render: ({ field: { onChange, value } }) => {
+                    var _a;
+                    return (react_1.default.createElement(expandableTextArea_1.default, Object.assign({ onDataChange: handleTextareaChange, ref: textareaRef }, register('fieldTitle'), { label: "Field Description", error: (_a = errors.fieldTitle) === null || _a === void 0 ? void 0 : _a.message, placeholder: "Enter your description here...", maxRows: 3 })));
+                } }),
             fieldType === 'file' && (react_1.default.createElement(react_1.default.Fragment, null,
                 react_1.default.createElement(Textfield_1.default, Object.assign({ name: "fileSize", placeholder: "File Size", required: true, label: "File Size" }, register('fileSize', {
                     setValueAs: (value) => parseInt(value, 10) || 0,
-                }), { error: (_c = errors.fileSize) === null || _c === void 0 ? void 0 : _c.message })),
+                }), { error: (_b = errors.fileSize) === null || _b === void 0 ? void 0 : _b.message })),
                 react_1.default.createElement("div", { className: "textfield-container" },
                     react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: "fileTypes", render: ({ field: { onChange, value } }) => {
                             var _a;
@@ -134,8 +142,8 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
             fieldType === 'text' ||
                 (fieldType === 'number' && (react_1.default.createElement(Textfield_1.default, Object.assign({ name: "maxLenth", placeholder: "Max Length", label: "Max Length" }, register('maxLenth', {
                     setValueAs: (value) => parseInt(value, 10) || 0,
-                }), { error: (_d = errors.maxLenth) === null || _d === void 0 ? void 0 : _d.message })))),
-            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "customErrorMessage", placeholder: "Custom Error Message", label: "Custom Error Message" }, register('customErrorMessage'), { error: (_e = errors.customErrorMessage) === null || _e === void 0 ? void 0 : _e.message })),
+                }), { error: (_c = errors.maxLenth) === null || _c === void 0 ? void 0 : _c.message })))),
+            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "customErrorMessage", placeholder: "Custom Error Message", label: "Custom Error Message" }, register('customErrorMessage'), { error: (_d = errors.customErrorMessage) === null || _d === void 0 ? void 0 : _d.message })),
             react_1.default.createElement(CheckBox_1.default, Object.assign({ label: "Required" }, register('required'))))));
 };
 exports.default = CreateField;

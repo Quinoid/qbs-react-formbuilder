@@ -1,0 +1,17 @@
+.date-picker-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.date-picker-input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+.date-picker-component {
+  display: flex;
+  flex-direction: column;
+}

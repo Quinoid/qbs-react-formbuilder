@@ -7,7 +7,7 @@ interface TextFieldProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     error?: string;
     disabled?: boolean;
-    type?: 'text' | 'password' | 'email' | 'checkbox';
+    type?: 'text' | 'password' | 'email' | 'checkbox' | 'number';
     required?: boolean;
 }
 declare const TextField: React.ForwardRefExoticComponent<TextFieldProps & React.RefAttributes<HTMLInputElement>>;

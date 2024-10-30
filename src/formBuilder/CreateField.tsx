@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -8,7 +8,7 @@ import CheckboxField from '../components/CheckBox';
 import Popup from '../components/DialogPopup';
 import SelectField from '../components/Select';
 import TextField from '../components/Textfield';
-
+import ExpandableTextarea from '../components/expandableTextArea';
 // Zod Schema for form validation
 const createFieldSchema = z
   .object({
@@ -75,6 +75,7 @@ const CreateField: React.FC<any> = ({
   } = useForm<CreateFieldSchema>({
     resolver: zodResolver(createFieldSchema),
   });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Handle form submission
   const onSubmit = (data: CreateFieldSchema) => {
@@ -111,6 +112,9 @@ const CreateField: React.FC<any> = ({
     setValue('fileTypes', e, { shouldValidate: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const handleTextareaChange = (value: string) => {
+    setValue('fieldTitle', value, { shouldValidate: true });
+  };
   return (
     <Popup
       isOpen={openField}
@@ -119,7 +123,7 @@ const CreateField: React.FC<any> = ({
       title={edit ? 'Update Field' : 'Add Field'}
       onSubmit={handleSubmit(onSubmit)} // Use handleSubmit from react-hook-form
     >
-      <div className="popup-form">
+      <div className="popup-form" >
         <SelectField
           label="Select an option"
           required
@@ -127,13 +131,21 @@ const CreateField: React.FC<any> = ({
           {...register('fieldType')}
           error={errors.fieldType?.message}
         />
-        <TextField
-          name="fieldTitle"
-          placeholder="Section Title"
-          required
-          label="Field Description"
-          {...register('fieldTitle')}
-          error={errors.fieldTitle?.message}
+
+        <Controller
+          control={control}
+          name="fileTypes"
+          render={({ field: { onChange, value } }) => (
+            <ExpandableTextarea
+              onDataChange={handleTextareaChange}
+              ref={textareaRef} // Pass the ref to the component
+              {...register('fieldTitle')}
+              label="Field Description"
+              error={errors.fieldTitle?.message}
+              placeholder="Enter your description here..."
+              maxRows={3} // You can set max rows as needed
+            />
+          )}
         />
         {fieldType === 'file' && (
           <>

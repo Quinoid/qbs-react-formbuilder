@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DuplicateIcon = exports.Question = exports.SectionIcon = exports.PlusIcon = exports.DeleteIcon = exports.EditIcon = exports.ThreeDot = exports.ArrowIcon = void 0;
+exports.CloseIcon = exports.DuplicateIcon = exports.Question = exports.SectionIcon = exports.PlusIcon = exports.DeleteIcon = exports.EditIcon = exports.ThreeDot = exports.ArrowIcon = void 0;
 const react_1 = __importDefault(require("react"));
 const ArrowIcon = ({ className = '' }) => {
     return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", "stroke-width": "1.5", stroke: "currentColor", width: 20, height: 20, className: `${className}` },
@@ -16,20 +16,18 @@ const ThreeDot = ({ className }) => {
 };
 exports.ThreeDot = ThreeDot;
 const EditIcon = () => {
-    return (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
-        react_1.default.createElement("path", { d: "M9.11992 2.07684H7.49833C3.44435 2.07684 1.82275 3.6863 1.82275 7.70996V12.5383C1.82275 16.562 3.44435 18.1715 7.49833 18.1715H12.3631C16.4171 18.1715 18.0387 16.562 18.0387 12.5383V10.9289", stroke: "#959393", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }),
-        react_1.default.createElement("path", { d: "M6.8171 9.23891C6.57386 9.48033 6.33062 9.95512 6.28197 10.3012L5.93333 12.7234C5.8036 13.6005 6.42791 14.2121 7.31168 14.0914L9.75218 13.7454C10.0927 13.6971 10.5711 13.4557 10.8224 13.2143L17.2115 6.873C18.3142 5.77857 18.8331 4.50709 17.2115 2.89763C15.5899 1.28817 14.3089 1.8032 13.2062 2.89763L6.8171 9.23891Z", stroke: "#959393", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }),
-        react_1.default.createElement("path", { d: "M12.29 3.80688C12.8333 5.73019 14.3495 7.23504 16.2954 7.78225", stroke: "#959393", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })));
+    return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", "stroke-width": "1.5", stroke: "currentColor", width: "20", height: "20" },
+        react_1.default.createElement("path", { "stroke-linecap": "round", "stroke-linejoin": "round", d: "m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" })));
 };
 exports.EditIcon = EditIcon;
 const DeleteIcon = () => {
-    return (react_1.default.createElement("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
-        react_1.default.createElement("path", { d: "M12.666 4.66667L12.0878 12.7617C12.038 13.4594 11.4574 14 10.7579 14H5.24084C4.54132 14 3.96073 13.4594 3.9109 12.7617L3.33268 4.66667M6.66602 7.33333V11.3333M9.33268 7.33333V11.3333M9.99935 4.66667V2.66667C9.99935 2.29848 9.70087 2 9.33268 2H6.66602C6.29783 2 5.99935 2.29848 5.99935 2.66667V4.66667M2.66602 4.66667H13.3327", stroke: "#222222", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })));
+    return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", "stroke-width": "1.5", stroke: "currentColor", width: "20", height: "20" },
+        react_1.default.createElement("path", { "stroke-linecap": "round", "stroke-linejoin": "round", d: "m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" })));
 };
 exports.DeleteIcon = DeleteIcon;
 const PlusIcon = () => {
-    return (react_1.default.createElement("svg", { width: "14", height: "14", viewBox: "0 0 14 14", fill: "currentColor", xmlns: "http://www.w3.org/2000/svg" },
-        react_1.default.createElement("path", { d: "M7.0013 1.66797V7.0013M7.0013 7.0013V12.3346M7.0013 7.0013H12.3346M7.0013 7.0013L1.66797 7.0013", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })));
+    return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", "stroke-width": "1.5", stroke: "currentColor", width: "20", height: "20" },
+        react_1.default.createElement("path", { "stroke-linecap": "round", "stroke-linejoin": "round", d: "M12 4.5v15m7.5-7.5h-15" })));
 };
 exports.PlusIcon = PlusIcon;
 const SectionIcon = () => {
@@ -38,7 +36,12 @@ const SectionIcon = () => {
 };
 exports.SectionIcon = SectionIcon;
 const Question = () => {
-    return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", "stroke-width": "1.5", stroke: "currentColor", className: "size-6", width: "20", height: "20" },
+    return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", style: {
+            width: '20px',
+            height: '20px',
+            minWidth: '20px',
+            minHeight: '20px',
+        }, "stroke-width": "1.5", stroke: "currentColor", className: "size-6", width: "20", height: "20" },
         react_1.default.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" })));
 };
 exports.Question = Question;
@@ -47,4 +50,10 @@ const DuplicateIcon = () => {
         react_1.default.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" })));
 };
 exports.DuplicateIcon = DuplicateIcon;
+const CloseIcon = () => {
+    return (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "feather feather-x" },
+        react_1.default.createElement("line", { x1: "18", y1: "6", x2: "6", y2: "18" }),
+        react_1.default.createElement("line", { x1: "6", y1: "6", x2: "18", y2: "18" })));
+};
+exports.CloseIcon = CloseIcon;
 //# sourceMappingURL=Icons.js.map

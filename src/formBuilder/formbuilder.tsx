@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import Button from '../components/Button';
-import {
-  DeleteIcon,
-  DuplicateIcon,
-  EditIcon,
-  PlusIcon,
-  Question,
-  SectionIcon,
-} from '../components/Icons';
+import { DeleteIcon, DuplicateIcon, EditIcon, PlusIcon, Question, SectionIcon } from '../components/Icons';
 import ThreeDotMenuDropdown from '../components/ThreeDotMenu';
+import { FieldType } from '../types';
 import CreateField from './CreateField';
 import CreateSection from './CreateSection';
+import FormPreview from './FormPreview';
 
 const options = [
   { value: 'number', label: 'Number' },
@@ -39,14 +34,15 @@ const FieldMenuOptions = [
 type Props = {
   formContent?: {
     title: string;
-    fields: any[];
+    fields: FieldType[];
     repeatable: boolean;
   }[];
-  updateFormConent: (data: any, msg?: string) => void;
+  updateFormContent: (data: any, msg?: string) => void;
 };
 
-const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
+const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
   const [sections, setSections] = useState<any>([]);
+
   const [draggedSection, setDraggedSection] = useState<any>(null);
   const [draggedField, setDraggedField] = useState<any>(null);
   const [editsection, setEditSection] = useState<any>(false);
@@ -57,12 +53,15 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
   const [currentSection, setCurrentSection] = useState<any>(null);
   const [currentField, setCurrentField] = useState<any>(null);
   const [message, setMessage] = useState<any>('');
+  const [openPreview, setOpenPreview] = useState(false);
   useEffect(() => {
     setSections(formContent);
   }, [formContent]);
 
   useEffect(() => {
-    updateFormConent(sections, message);
+    if (updateKey !== 0) {
+      updateFormContent(sections, message);
+    }
   }, [updateKey]);
 
   const handleDragStartSection = (section: any) => {
@@ -122,7 +121,10 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
       setEditSection(false);
       setMessage('Section Updated Successfully');
     } else {
-      setSections([...sections, { ...data, id: Date.now(), fields: [] }]);
+      setSections([
+        ...sections,
+        { ...data, id: Date.now().toString(), fields: [] },
+      ]);
       setOpenSection(false);
       setMessage('Section Created Successfully');
     }
@@ -148,7 +150,10 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
     } else {
       const result = sections.map((sect: any) =>
         sect.id === currentSection?.id
-          ? { ...sect, fields: [{ ...data, id: Date.now() }, ...sect.fields] }
+          ? {
+              ...sect,
+              fields: [{ ...data, id: Date.now().toString() }, ...sect.fields],
+            }
           : sect
       );
       setSections(result);
@@ -161,6 +166,7 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
   const handleOpenFieldCreate = (section: any) => {
     setCurrentSection(section);
     setOpenField(true);
+    setEditField(false);
   };
   const handleDelete = (sectionId: any) => {
     setSections(sections.filter((section: any) => section.id !== sectionId));
@@ -195,7 +201,7 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
   };
   const handleDuplicate = (sectionId: any) => {
     const result = sections;
-    result.push({ ...sectionId, id: Date.now() });
+    result.push({ ...sectionId, id: Date.now().toString() });
     setSections(result);
     setUpdateKey(updateKey + 1);
   };
@@ -220,6 +226,23 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
       handleEditField(section, field);
     }
   };
+  if (openPreview) {
+    return (
+      <div className="preview-container">
+        <div className="section-header">
+          <span className="section-header-title">Form Builder</span>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Button
+              label="Back to Form Builder"
+              onClick={() => setOpenPreview(false)}
+            />
+          </div>
+        </div>
+
+        <FormPreview formContent={sections} />
+      </div>
+    );
+  }
   return (
     <div>
       <div className="section-container">
@@ -227,7 +250,9 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormConent }) => {
           <div className="section-items">
             <div className="section-header">
               <span className="section-header-title">Form Builder</span>
-              <div>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <Button label="Preview" onClick={() => setOpenPreview(true)} />
+
                 <Button
                   label="Create New Section"
                   onClick={() => setOpenSection(true)}

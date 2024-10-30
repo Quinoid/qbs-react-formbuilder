@@ -32,6 +32,7 @@ const Icons_1 = require("../components/Icons");
 const ThreeDotMenu_1 = __importDefault(require("../components/ThreeDotMenu"));
 const CreateField_1 = __importDefault(require("./CreateField"));
 const CreateSection_1 = __importDefault(require("./CreateSection"));
+const FormPreview_1 = __importDefault(require("./FormPreview"));
 const options = [
     { value: 'number', label: 'Number' },
     { value: 'text', label: 'Text' },
@@ -53,7 +54,7 @@ const FieldMenuOptions = [
     { label: 'Delete Field', slug: 'delete-field', icon: react_1.default.createElement(Icons_1.DeleteIcon, null) },
     { label: 'Edit Field', slug: 'edit-field', icon: react_1.default.createElement(Icons_1.EditIcon, null) },
 ];
-const FormBuilder = ({ formContent, updateFormConent }) => {
+const FormBuilder = ({ formContent, updateFormContent }) => {
     const [sections, setSections] = (0, react_1.useState)([]);
     const [draggedSection, setDraggedSection] = (0, react_1.useState)(null);
     const [draggedField, setDraggedField] = (0, react_1.useState)(null);
@@ -65,11 +66,14 @@ const FormBuilder = ({ formContent, updateFormConent }) => {
     const [currentSection, setCurrentSection] = (0, react_1.useState)(null);
     const [currentField, setCurrentField] = (0, react_1.useState)(null);
     const [message, setMessage] = (0, react_1.useState)('');
+    const [openPreview, setOpenPreview] = (0, react_1.useState)(false);
     (0, react_1.useEffect)(() => {
         setSections(formContent);
     }, [formContent]);
     (0, react_1.useEffect)(() => {
-        updateFormConent(sections, message);
+        if (updateKey !== 0) {
+            updateFormContent(sections, message);
+        }
     }, [updateKey]);
     const handleDragStartSection = (section) => {
         setDraggedSection(section);
@@ -117,7 +121,10 @@ const FormBuilder = ({ formContent, updateFormConent }) => {
             setMessage('Section Updated Successfully');
         }
         else {
-            setSections([...sections, Object.assign(Object.assign({}, data), { id: Date.now(), fields: [] })]);
+            setSections([
+                ...sections,
+                Object.assign(Object.assign({}, data), { id: Date.now().toString(), fields: [] }),
+            ]);
             setOpenSection(false);
             setMessage('Section Created Successfully');
         }
@@ -133,7 +140,7 @@ const FormBuilder = ({ formContent, updateFormConent }) => {
         }
         else {
             const result = sections.map((sect) => sect.id === (currentSection === null || currentSection === void 0 ? void 0 : currentSection.id)
-                ? Object.assign(Object.assign({}, sect), { fields: [Object.assign(Object.assign({}, data), { id: Date.now() }), ...sect.fields] }) : sect);
+                ? Object.assign(Object.assign({}, sect), { fields: [Object.assign(Object.assign({}, data), { id: Date.now().toString() }), ...sect.fields] }) : sect);
             setSections(result);
             setOpenField(false);
             setMessage('Section Field Created Successfully');
@@ -143,6 +150,7 @@ const FormBuilder = ({ formContent, updateFormConent }) => {
     const handleOpenFieldCreate = (section) => {
         setCurrentSection(section);
         setOpenField(true);
+        setEditField(false);
     };
     const handleDelete = (sectionId) => {
         setSections(sections.filter((section) => section.id !== sectionId));
@@ -172,7 +180,7 @@ const FormBuilder = ({ formContent, updateFormConent }) => {
     };
     const handleDuplicate = (sectionId) => {
         const result = sections;
-        result.push(Object.assign(Object.assign({}, sectionId), { id: Date.now() }));
+        result.push(Object.assign(Object.assign({}, sectionId), { id: Date.now().toString() }));
         setSections(result);
         setUpdateKey(updateKey + 1);
     };
@@ -201,11 +209,20 @@ const FormBuilder = ({ formContent, updateFormConent }) => {
             handleEditField(section, field);
         }
     };
+    if (openPreview) {
+        return (react_1.default.createElement("div", { className: "preview-container" },
+            react_1.default.createElement("div", { className: "section-header" },
+                react_1.default.createElement("span", { className: "section-header-title" }, "Form Builder"),
+                react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } },
+                    react_1.default.createElement(Button_1.default, { label: "Back to Form Builder", onClick: () => setOpenPreview(false) }))),
+            react_1.default.createElement(FormPreview_1.default, { formContent: sections })));
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("div", { className: "section-container" }, sections && sections.length > 0 ? (react_1.default.createElement("div", { className: "section-items" },
             react_1.default.createElement("div", { className: "section-header" },
                 react_1.default.createElement("span", { className: "section-header-title" }, "Form Builder"),
-                react_1.default.createElement("div", null,
+                react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } },
+                    react_1.default.createElement(Button_1.default, { label: "Preview", onClick: () => setOpenPreview(true) }),
                     react_1.default.createElement(Button_1.default, { label: "Create New Section", onClick: () => setOpenSection(true) }))),
             sections.map((section) => {
                 var _a, _b;

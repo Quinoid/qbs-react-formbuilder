@@ -124,3 +124,8 @@
   background-color: #f0f8ff;
   border-bottom: 1px solid #e6e8ea;
 }
+.popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
