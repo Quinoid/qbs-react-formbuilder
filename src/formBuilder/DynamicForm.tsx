@@ -13,11 +13,11 @@ type Props = {
   formContent?: {
     title: string;
     fields: FieldType[];
-    repeatable: boolean;
+    isRepeatable: boolean;
   }[];
   formTitle?: string;
   formValues?: any;
-  updateFormContent?: (data: any, msg?: string) => void;
+  updateFormContent?: (data: any, msg?: string) => Promise<boolean>;
 };
 const DynamicForm: React.FC<Props> = ({
   formContent,
@@ -43,27 +43,35 @@ const DynamicForm: React.FC<Props> = ({
     methods.reset(getInitialData());
   }, [formValues]);
 
-  const updateForm = (data: any) => {
-    const result: any = {};
+  const updateForm = async (data: any) => {
+    const result: Record<string, { value: any; type: string }> = {};
 
     formContent.forEach((section) => {
       section.fields.forEach((field) => {
-        result[field.id] = data[field.id] ?? '';
+        const fieldValue = data[field.id];
+
+        result[field.id] = { value: fieldValue, type: field.fieldType };
       });
     });
 
-    updateFormContent(result);
+    const res = await updateFormContent(result);
+    console.log(res);
+    if (res) {
+      setEdit(false);
+    }
   };
+
   const handleReset = () => {
     methods.reset(getInitialData());
     setEdit(false);
   };
+
   const { errors } = methods.formState;
   return (
     <div className="preview-container">
       <div className="section-header">
         <span className="section-header-title">
-          {formTitle ?? 'FieldError'}
+          {formTitle ?? 'Data Collection Form'}
         </span>
         <div style={{ display: 'flex', gap: '10px' }}>
           {edit ? (

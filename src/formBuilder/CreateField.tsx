@@ -21,7 +21,7 @@ const createFieldSchema = z
       .optional(),
     fileSize: z.number().optional(),
     customErrorMessage: z.string().optional(),
-    maxLenth: z.number().optional(),
+    maxLength: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     // Check if fieldType is 'file'
@@ -92,7 +92,7 @@ const CreateField: React.FC<any> = ({
           fileTypes: data?.fileTypes,
           fileSize: data?.fileSize,
           customErrorMessage: data?.customErrorMessage,
-          maxLenth: data?.maxLenth,
+          maxLength: data?.maxLength,
         });
       } else {
         reset({
@@ -102,7 +102,7 @@ const CreateField: React.FC<any> = ({
           fileTypes: [],
           fileSize: 0,
           customErrorMessage: '',
-          maxLenth: 0,
+          maxLength: 0,
         });
       }
     }
@@ -123,7 +123,7 @@ const CreateField: React.FC<any> = ({
       title={edit ? 'Update Field' : 'Add Field'}
       onSubmit={handleSubmit(onSubmit)} // Use handleSubmit from react-hook-form
     >
-      <div className="popup-form" >
+      <div className="popup-form">
         <SelectField
           label="Select an option"
           required
@@ -185,13 +185,13 @@ const CreateField: React.FC<any> = ({
         {fieldType === 'text' ||
           (fieldType === 'number' && (
             <TextField
-              name="maxLenth"
+              name="maxLength"
               placeholder="Max Length"
               label="Max Length"
-              {...register('maxLenth', {
+              {...register('maxLength', {
                 setValueAs: (value) => parseInt(value, 10) || 0,
               })}
-              error={errors.maxLenth?.message}
+              error={errors.maxLength?.message}
             />
           ))}
 

@@ -4,7 +4,7 @@ type Props = {
     formContent?: {
         title: string;
         fields: FieldType[];
-        repeatable: boolean;
+        isRepeatable: boolean;
     }[];
     updateFormContent: (data: any, msg?: string) => void;
 };

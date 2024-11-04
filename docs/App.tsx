@@ -1,9 +1,7 @@
-import { useState } from 'react';
-import React from 'react';
-
-import FormBuilder from '../src/formBuilder/formbuilder';
+import React, { useState } from 'react';
 
 import '../src/styles/global.css';
+import DynamicForm from '../src/formBuilder/DynamicForm';
 
 export default function App() {
   const [dropData, setDropData] = useState([]);
@@ -12,7 +10,8 @@ export default function App() {
 
   return (
     <div>
-      <FormBuilder formContent={dropData} updateFormConent={setDropData} />
+        {/* <FormBuilder formContent={dropData} updateFormContent={() => {}} /> */}
+        <DynamicForm />
     </div>
   );
 }

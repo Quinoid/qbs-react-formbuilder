@@ -48,7 +48,7 @@ const createFieldSchema = zod_2.z
         .optional(),
     fileSize: zod_2.z.number().optional(),
     customErrorMessage: zod_2.z.string().optional(),
-    maxLenth: zod_2.z.number().optional(),
+    maxLength: zod_2.z.number().optional(),
 })
     .superRefine((data, ctx) => {
     // Check if fieldType is 'file'
@@ -99,7 +99,7 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
                     fileTypes: data === null || data === void 0 ? void 0 : data.fileTypes,
                     fileSize: data === null || data === void 0 ? void 0 : data.fileSize,
                     customErrorMessage: data === null || data === void 0 ? void 0 : data.customErrorMessage,
-                    maxLenth: data === null || data === void 0 ? void 0 : data.maxLenth,
+                    maxLength: data === null || data === void 0 ? void 0 : data.maxLength,
                 });
             }
             else {
@@ -110,7 +110,7 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
                     fileTypes: [],
                     fileSize: 0,
                     customErrorMessage: '',
-                    maxLenth: 0,
+                    maxLength: 0,
                 });
             }
         }
@@ -140,9 +140,9 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
                             return (react_1.default.createElement(AutoComplete_1.default, { onChange: handleMultiChange, label: "Select multiple options", data: allowedFileTypes, desc: "label", descId: "value", name: "fileTypes", required: true, isMultiple: true, errors: errors.fileTypes, selectedItems: (_a = watch().fileTypes) !== null && _a !== void 0 ? _a : [] }));
                         } })))),
             fieldType === 'text' ||
-                (fieldType === 'number' && (react_1.default.createElement(Textfield_1.default, Object.assign({ name: "maxLenth", placeholder: "Max Length", label: "Max Length" }, register('maxLenth', {
+                (fieldType === 'number' && (react_1.default.createElement(Textfield_1.default, Object.assign({ name: "maxLength", placeholder: "Max Length", label: "Max Length" }, register('maxLength', {
                     setValueAs: (value) => parseInt(value, 10) || 0,
-                }), { error: (_c = errors.maxLenth) === null || _c === void 0 ? void 0 : _c.message })))),
+                }), { error: (_c = errors.maxLength) === null || _c === void 0 ? void 0 : _c.message })))),
             react_1.default.createElement(Textfield_1.default, Object.assign({ name: "customErrorMessage", placeholder: "Custom Error Message", label: "Custom Error Message" }, register('customErrorMessage'), { error: (_d = errors.customErrorMessage) === null || _d === void 0 ? void 0 : _d.message })),
             react_1.default.createElement(CheckBox_1.default, Object.assign({ label: "Required" }, register('required'))))));
 };

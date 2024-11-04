@@ -6,6 +6,7 @@ const generateDynamicSchema = (sections) => {
     // Initialize the accumulator with the proper type
     const fieldSchemas = sections.reduce((acc, section) => {
         section.fields.forEach((field, index) => {
+            var _a;
             let fieldSchema; // Initialize fieldSchema
             // Create a unique field name
             const uniqueFieldName = `${field.id}`;
@@ -22,21 +23,31 @@ const generateDynamicSchema = (sections) => {
                     break;
                 case 'date':
                     fieldSchema = zod_1.z
-                        .union([zod_1.z.date(), zod_1.z.null()])
+                        .union([zod_1.z.date(), zod_1.z.null(), zod_1.z.string()])
                         .refine((value) => value !== null, {
                         message: 'Please select a date',
                     });
                     break;
                 case 'file':
                     if (field.fileTypes && field.fileTypes.length > 0) {
-                        const fileTypeValues = field.fileTypes.map((type) => type.value);
-                        fieldSchema = zod_1.z.object({
-                            file: zod_1.z.instanceof(File),
-                            size: zod_1.z.number().max(field.fileSize * 1024 * 1024, {
+                        fieldSchema = zod_1.z.union([
+                            zod_1.z
+                                .instanceof(File)
+                                .refine((file) => file.size <= (field.fileSize || Infinity) * 1024 * 1024, {
                                 message: `File size must be less than ${field.fileSize} MB`,
+                            })
+                                .refine((file) => field.fileTypes &&
+                                field.fileTypes.some((type) => file.type === type.value), {
+                                message: `File type must be one of the following: ${(_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value).join(', ')}`,
                             }),
-                            type: zod_1.z.enum(fileTypeValues),
-                        });
+                            zod_1.z.string(),
+                            zod_1.z.object({
+                                link: zod_1.z.string().optional(),
+                                name: zod_1.z.string().optional(),
+                            }),
+                            zod_1.z.null().optional(), // Allow null if file is optional
+                        ]);
+                        // Makes the file field optional
                     }
                     else {
                         fieldSchema = zod_1.z.any(); // Fallback schema if fileTypes is empty or undefined
@@ -45,13 +56,17 @@ const generateDynamicSchema = (sections) => {
                 default:
                     throw new Error(`Unsupported field type: ${field.fieldType}`);
             }
-            // Apply required validation if specified
             if (field.required) {
-                if (fieldSchema instanceof zod_1.z.ZodString) {
-                    fieldSchema = fieldSchema.min(1, `This is a mandatory field`);
+                if (field.fieldType === 'file') {
+                    // For required files, ensure the file is not null or undefined
+                    fieldSchema = fieldSchema.refine((file) => file instanceof File ||
+                        typeof file === 'string' ||
+                        typeof file === 'object', {
+                        message: 'This is a mandatory field',
+                    });
                 }
-                else {
-                    // Alternative handling code for when fieldSchema isn't ZodString.
+                else if (fieldSchema instanceof zod_1.z.ZodString) {
+                    fieldSchema = fieldSchema.min(1, `This is a mandatory field`);
                 }
             }
             else {

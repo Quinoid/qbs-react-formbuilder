@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -49,16 +58,20 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, })
     (0, react_1.useEffect)(() => {
         methods.reset(getInitialData());
     }, [formValues]);
-    const updateForm = (data) => {
+    const updateForm = (data) => __awaiter(void 0, void 0, void 0, function* () {
         const result = {};
         formContent.forEach((section) => {
             section.fields.forEach((field) => {
-                var _a;
-                result[field.id] = (_a = data[field.id]) !== null && _a !== void 0 ? _a : '';
+                const fieldValue = data[field.id];
+                result[field.id] = { value: fieldValue, type: field.fieldType };
             });
         });
-        updateFormContent(result);
-    };
+        const res = yield updateFormContent(result);
+        console.log(res);
+        if (res) {
+            setEdit(false);
+        }
+    });
     const handleReset = () => {
         methods.reset(getInitialData());
         setEdit(false);
@@ -66,7 +79,7 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, })
     const { errors } = methods.formState;
     return (react_1.default.createElement("div", { className: "preview-container" },
         react_1.default.createElement("div", { className: "section-header" },
-            react_1.default.createElement("span", { className: "section-header-title" }, formTitle !== null && formTitle !== void 0 ? formTitle : 'FieldError'),
+            react_1.default.createElement("span", { className: "section-header-title" }, formTitle !== null && formTitle !== void 0 ? formTitle : 'Data Collection Form'),
             react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } }, edit ? (react_1.default.createElement(react_1.default.Fragment, null,
                 react_1.default.createElement(Button_1.default, { label: "Save", onClick: methods.handleSubmit(updateForm) }),
                 react_1.default.createElement(Button_1.default, { label: "Cancel", type: "secondary", onClick: handleReset }))) : (react_1.default.createElement(Button_1.default, { label: "Edit", onClick: () => setEdit(true) })))),

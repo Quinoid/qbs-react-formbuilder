@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type FileUploadProps = {
   allowedFileTypes?: string[]; // Allowed file types, e.g., ['image/png', 'application/pdf']
@@ -6,18 +6,22 @@ type FileUploadProps = {
   onFileChange: (file: File | null) => void; // Callback when file changes
   errors?: string;
   disabled?: boolean;
+  value?: any;
+  name?: string;
 };
 
 const FileUpload: React.FC<FileUploadProps> = ({
   allowedFileTypes = [],
-  maxSize = 3072, // Default max file size is 3MB
+  maxSize = 3, // Default max file size is 3MB
   onFileChange,
   errors,
   disabled,
+  value,
+  name,
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const maxFileSize = maxSize * 1024 * 1024;
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -30,10 +34,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
       }
 
       // Validate file size
-      if (selectedFile.size > maxSize) {
-        setError(
-          `File size exceeds the limit of ${(maxSize / 1024).toFixed(2)} KB`
-        );
+      if (selectedFile.size > maxFileSize) {
+        setError(`File size exceeds the limit of ${maxSize} MB`);
         return;
       }
 
@@ -58,7 +60,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <div className="file-upload-container">
       <label
-        htmlFor="file-upload"
+        htmlFor={name}
         className={`file-upload-label ${disabled ? 'disabled' : ''}`}
       >
         <span className="upload-icon">📁</span>
@@ -68,20 +70,28 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </span>
       </label>
       <input
-        id="file-upload"
+        id={name}
         type="file"
+        name={name}
         onChange={handleFileChange}
         accept={allowedFileTypes.join(',')}
         disabled={disabled}
         style={{ display: 'none' }} // Hide the default file input
       />
-      {file && (
+      {file ? (
         <div className="uploaded-file-info">
           <p>Uploaded file: {file.name}</p>
           <button onClick={handleRemoveFile} className="remove-file-button">
             Remove
           </button>
         </div>
+      ) : (
+        value &&
+        value !== 'null' && (
+          <div className="uploaded-file-info">
+            <a href={value.link}>Uploaded file : {value.name}</a>
+          </div>
+        )
       )}
       {error && <span className="textfield-error">{error}</span>}
     </div>

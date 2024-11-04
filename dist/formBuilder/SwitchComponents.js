@@ -32,15 +32,18 @@ const datepicker_1 = __importDefault(require("../components/datepicker"));
 const expandableTextArea_1 = __importDefault(require("../components/expandableTextArea"));
 const fileupload_1 = __importDefault(require("../components/fileupload"));
 const Textfield_1 = __importDefault(require("../components/Textfield"));
-const SwitchComponents = ({ field, errors, editable }) => {
+const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
     const textareaRef = (0, react_1.useRef)(null);
     const { control, register, setValue } = (0, react_hook_form_1.useFormContext)();
     const handleTextareaChange = (value) => {
-        setValue(field.name, value, { shouldValidate: true });
+        setValue(field.id, value, { shouldValidate: true });
     };
+    const onFileChange = (value, name) => {
+        setValue(name, value, { shouldValidate: true });
+    };
+    const watchedFileValue = (0, react_hook_form_1.useWatch)({ name: field.id });
     switch (field.fieldType) {
         case 'text':
-        case 'number':
             return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id), { error: errors })));
         case 'number':
             return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id, {
@@ -51,13 +54,13 @@ const SwitchComponents = ({ field, errors, editable }) => {
         case 'date':
             return (react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: field.id, render: ({ field: { onChange, value } }) => (react_1.default.createElement(datepicker_1.default, { name: field.fieldTitle, selectedDate: value, disabled: !editable, error: errors, onChange: onChange })) }));
         case 'file':
-            return (react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: field.id, render: ({ field: { onChange, value } }) => {
+            return (react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: field.id, render: ({}) => {
                     var _a;
-                    return (react_1.default.createElement(fileupload_1.default, { onFileChange: onChange, errors: errors, disabled: !editable, allowedFileTypes: (_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value) }));
+                    return (react_1.default.createElement(fileupload_1.default, { key: field.id, onFileChange: (file) => onFileChange(file, field.id), errors: errors, name: field.id, maxSize: field.fileSize, disabled: !editable, value: watchedFileValue, allowedFileTypes: (_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value) }));
                 } }));
         default:
             return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: "text" }, register(field.id), { error: errors })));
     }
-};
+});
 exports.default = SwitchComponents;
 //# sourceMappingURL=SwitchComponents.js.map

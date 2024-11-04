@@ -4,11 +4,11 @@ type Props = {
     formContent?: {
         title: string;
         fields: FieldType[];
-        repeatable: boolean;
+        isRepeatable: boolean;
     }[];
     formTitle?: string;
     formValues?: any;
-    updateFormContent?: (data: any, msg?: string) => void;
+    updateFormContent?: (data: any, msg?: string) => Promise<boolean>;
 };
 declare const DynamicForm: React.FC<Props>;
 export default DynamicForm;

@@ -140,7 +140,12 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
         }
         else {
             const result = sections.map((sect) => sect.id === (currentSection === null || currentSection === void 0 ? void 0 : currentSection.id)
-                ? Object.assign(Object.assign({}, sect), { fields: [Object.assign(Object.assign({}, data), { id: Date.now().toString() }), ...sect.fields] }) : sect);
+                ? Object.assign(Object.assign({}, sect), { fields: [
+                        Object.assign(Object.assign({}, data), { id: data.fieldType === 'file'
+                                ? `file-${Date.now().toString()}`
+                                : Date.now().toString() }),
+                        ...sect.fields,
+                    ] }) : sect);
             setSections(result);
             setOpenField(false);
             setMessage('Section Field Created Successfully');
@@ -178,11 +183,13 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
         setOpenField(true);
         setCurrentField(fieldId);
     };
-    const handleDuplicate = (sectionId) => {
-        const result = sections;
-        result.push(Object.assign(Object.assign({}, sectionId), { id: Date.now().toString() }));
-        setSections(result);
-        setUpdateKey(updateKey + 1);
+    const handleDuplicate = (section) => {
+        var _a;
+        const result = [...sections]; // Create a shallow copy of sections
+        const newSection = Object.assign(Object.assign({}, section), { id: `${Date.now().toString()}`, fields: (_a = section === null || section === void 0 ? void 0 : section.fields) === null || _a === void 0 ? void 0 : _a.map((field, index) => (Object.assign(Object.assign({}, field), { id: `dup-${index}-${Date.now().toString()}` }))) });
+        result.push(newSection); // Add the new section with updated fields
+        setSections(result); // Update state with the new sections array
+        setUpdateKey(updateKey + 1); // Trigger an update
     };
     const handleMenuAction = (option, section) => {
         if (option.slug === 'delete-section') {

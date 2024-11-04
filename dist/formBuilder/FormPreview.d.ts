@@ -4,7 +4,7 @@ type Props = {
     formContent?: {
         title: string;
         fields: FieldType[];
-        repeatable: boolean;
+        isRepeatable: boolean;
     }[];
 };
 declare const FormPreview: React.FC<Props>;

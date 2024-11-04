@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 import Button from '../components/Button';
-import { DeleteIcon, DuplicateIcon, EditIcon, PlusIcon, Question, SectionIcon } from '../components/Icons';
+import {
+  DeleteIcon,
+  DuplicateIcon,
+  EditIcon,
+  PlusIcon,
+  Question,
+  SectionIcon,
+} from '../components/Icons';
 import ThreeDotMenuDropdown from '../components/ThreeDotMenu';
 import { FieldType } from '../types';
 import CreateField from './CreateField';
@@ -35,7 +42,7 @@ type Props = {
   formContent?: {
     title: string;
     fields: FieldType[];
-    repeatable: boolean;
+    isRepeatable: boolean;
   }[];
   updateFormContent: (data: any, msg?: string) => void;
 };
@@ -152,7 +159,16 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
         sect.id === currentSection?.id
           ? {
               ...sect,
-              fields: [{ ...data, id: Date.now().toString() }, ...sect.fields],
+              fields: [
+                {
+                  ...data,
+                  id:
+                    data.fieldType === 'file'
+                      ? `file-${Date.now().toString()}`
+                      : Date.now().toString(),
+                },
+                ...sect.fields,
+              ],
             }
           : sect
       );
@@ -199,11 +215,20 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
     setOpenField(true);
     setCurrentField(fieldId);
   };
-  const handleDuplicate = (sectionId: any) => {
-    const result = sections;
-    result.push({ ...sectionId, id: Date.now().toString() });
-    setSections(result);
-    setUpdateKey(updateKey + 1);
+ 
+  const handleDuplicate = (section: any) => {
+    const result = [...sections]; // Create a shallow copy of sections
+    const newSection = {
+      ...section,
+      id: `${Date.now().toString()}`, // Assign a new ID to the section
+      fields: section?.fields?.map((field: any, index: number) => ({
+        ...field,
+        id: `dup-${index}-${Date.now().toString()}`,
+      })),
+    };
+    result.push(newSection); // Add the new section with updated fields
+    setSections(result); // Update state with the new sections array
+    setUpdateKey(updateKey + 1); // Trigger an update
   };
 
   const handleMenuAction = (option: any, section: any) => {

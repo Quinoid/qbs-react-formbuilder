@@ -2,7 +2,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import moment from 'moment';
 type DatePickerProps = {
   label?: string;
   selectedDate?: Date | null;
@@ -22,13 +22,13 @@ const CustomDatePicker: React.FC<DatePickerProps> = ({
   disabled,
   error,
 }) => {
+  const value = selectedDate ? moment(selectedDate).format('DD-MM-YYYY') : '';
   return (
     <div className="date-picker-component">
       <label className="date-picker-label">
         {label} {required && <span>*</span>}
       </label>
       <DatePicker
-        selected={selectedDate}
         onChange={onChange}
         name={name}
         disabled={disabled}
@@ -37,6 +37,7 @@ const CustomDatePicker: React.FC<DatePickerProps> = ({
         className={`date-picker-input ${
           error ? 'date-picker-input-error' : ''
         }`}
+        value={value}
       />
       {error && <span className="textfield-error">{error}</span>}
     </div>

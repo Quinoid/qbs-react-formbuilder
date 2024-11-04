@@ -33,7 +33,7 @@ export const generateDynamicSchema = (sections: Section[]) => {
             break;
           case 'date':
             fieldSchema = z
-              .union([z.date(), z.null()])
+              .union([z.date(), z.null(), z.string()])
               .refine((value) => value !== null, {
                 message: 'Please select a date',
               });
@@ -41,14 +41,34 @@ export const generateDynamicSchema = (sections: Section[]) => {
 
           case 'file':
             if (field.fileTypes && field.fileTypes.length > 0) {
-              const fileTypeValues = field.fileTypes.map((type) => type.value);
-              fieldSchema = z.object({
-                file: z.instanceof(File),
-                size: z.number().max(field.fileSize! * 1024 * 1024, {
-                  message: `File size must be less than ${field.fileSize} MB`,
+              fieldSchema = z.union([
+                z
+                  .instanceof(File)
+                  .refine(
+                    (file) =>
+                      file.size <= (field.fileSize || Infinity) * 1024 * 1024,
+                    {
+                      message: `File size must be less than ${field.fileSize} MB`,
+                    }
+                  )
+                  .refine(
+                    (file) =>
+                      field.fileTypes &&
+                      field.fileTypes.some((type) => file.type === type.value),
+                    {
+                      message: `File type must be one of the following: ${field.fileTypes
+                        ?.map((type) => type.value)
+                        .join(', ')}`,
+                    }
+                  ),
+                z.string(),
+                z.object({
+                  link: z.string().optional(),
+                  name: z.string().optional(),
                 }),
-                type: z.enum(fileTypeValues as [string, ...string[]]),
-              });
+                z.null().optional(), // Allow null if file is optional
+              ]);
+              // Makes the file field optional
             } else {
               fieldSchema = z.any(); // Fallback schema if fileTypes is empty or undefined
             }
@@ -58,12 +78,20 @@ export const generateDynamicSchema = (sections: Section[]) => {
             throw new Error(`Unsupported field type: ${field.fieldType}`);
         }
 
-        // Apply required validation if specified
         if (field.required) {
-          if (fieldSchema instanceof z.ZodString) {
+          if (field.fieldType === 'file') {
+            // For required files, ensure the file is not null or undefined
+            fieldSchema = fieldSchema.refine(
+              (file) =>
+                file instanceof File ||
+                typeof file === 'string' ||
+                typeof file === 'object',
+              {
+                message: 'This is a mandatory field',
+              }
+            );
+          } else if (fieldSchema instanceof z.ZodString) {
             fieldSchema = fieldSchema.min(1, `This is a mandatory field`);
-          } else {
-            // Alternative handling code for when fieldSchema isn't ZodString.
           }
         } else {
           fieldSchema = fieldSchema.optional();

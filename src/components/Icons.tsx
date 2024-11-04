@@ -6,7 +6,7 @@ export const ArrowIcon: React.FC<any> = ({ className = '' }) => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       width={20}
       height={20}
@@ -48,7 +48,7 @@ export const EditIcon: React.FC<any> = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       width="20"
       height="20"
@@ -67,7 +67,7 @@ export const DeleteIcon: React.FC<any> = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       width="20"
       height="20"
@@ -86,7 +86,7 @@ export const PlusIcon: React.FC<any> = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       width="20"
       height="20"
@@ -106,7 +106,7 @@ export const SectionIcon: React.FC<any> = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       className="size-6"
       width="20"
@@ -133,7 +133,7 @@ export const Question: React.FC<any> = () => {
         minWidth: '20px',
         minHeight: '20px',
       }}
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       className="size-6"
       width="20"
@@ -153,7 +153,7 @@ export const DuplicateIcon: React.FC<any> = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke="currentColor"
       className="size-6"
       width="20"

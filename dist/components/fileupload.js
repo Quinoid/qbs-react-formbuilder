@@ -24,10 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const FileUpload = ({ allowedFileTypes = [], maxSize = 3072, // Default max file size is 3MB
-onFileChange, errors, disabled, }) => {
+const FileUpload = ({ allowedFileTypes = [], maxSize = 3, // Default max file size is 3MB
+onFileChange, errors, disabled, value, name, }) => {
     const [file, setFile] = (0, react_1.useState)(null);
     const [error, setError] = (0, react_1.useState)(null);
+    const maxFileSize = maxSize * 1024 * 1024;
     const handleFileChange = (event) => {
         var _a;
         const selectedFile = (_a = event.target.files) === null || _a === void 0 ? void 0 : _a[0];
@@ -38,8 +39,8 @@ onFileChange, errors, disabled, }) => {
                 return;
             }
             // Validate file size
-            if (selectedFile.size > maxSize) {
-                setError(`File size exceeds the limit of ${(maxSize / 1024).toFixed(2)} KB`);
+            if (selectedFile.size > maxFileSize) {
+                setError(`File size exceeds the limit of ${maxSize} MB`);
                 return;
             }
             // If valid, set the file and clear the error
@@ -59,15 +60,19 @@ onFileChange, errors, disabled, }) => {
         onFileChange(null);
     };
     return (react_1.default.createElement("div", { className: "file-upload-container" },
-        react_1.default.createElement("label", { htmlFor: "file-upload", className: `file-upload-label ${disabled ? 'disabled' : ''}` },
+        react_1.default.createElement("label", { htmlFor: name, className: `file-upload-label ${disabled ? 'disabled' : ''}` },
             react_1.default.createElement("span", { className: "upload-icon" }, "\uD83D\uDCC1"),
             react_1.default.createElement("span", { className: "upload-text" }, file ? 'Change File' : 'Upload File')),
-        react_1.default.createElement("input", { id: "file-upload", type: "file", onChange: handleFileChange, accept: allowedFileTypes.join(','), disabled: disabled, style: { display: 'none' } }),
-        file && (react_1.default.createElement("div", { className: "uploaded-file-info" },
+        react_1.default.createElement("input", { id: name, type: "file", name: name, onChange: handleFileChange, accept: allowedFileTypes.join(','), disabled: disabled, style: { display: 'none' } }),
+        file ? (react_1.default.createElement("div", { className: "uploaded-file-info" },
             react_1.default.createElement("p", null,
                 "Uploaded file: ",
                 file.name),
-            react_1.default.createElement("button", { onClick: handleRemoveFile, className: "remove-file-button" }, "Remove"))),
+            react_1.default.createElement("button", { onClick: handleRemoveFile, className: "remove-file-button" }, "Remove"))) : (value &&
+            value !== 'null' && (react_1.default.createElement("div", { className: "uploaded-file-info" },
+            react_1.default.createElement("a", { href: value.link },
+                "Uploaded file : ",
+                value.name)))),
         error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
 };
 exports.default = FileUpload;

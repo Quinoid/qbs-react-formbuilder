@@ -2,94 +2,181 @@ import { Section } from './types';
 
 export const formSections: Section[] = [
   {
-    title: 'Personal Information',
+    id: '1730275568243',
+    title: 'Section 1',
     fields: [
       {
-        fieldType: 'text',
-        fieldTitle:
-          'What is your full first id as it appears on your official identification documents?',
-        required: true,
-        id: 'id',
-
-        maxLength: 50,
+        id: '1730275740775',
+        fileSize: 0,
+        maxLength: 0,
+        required: false,
+        fieldType: 'date',
+        fileTypes: [],
+        fieldTitle: 'Your Birthday?',
+        customErrorMessage: '',
       },
       {
+        id: '1730275659290',
+        fileSize: 0,
+        maxLength: 3,
+        required: true,
+        fieldType: 'number',
+        fileTypes: [],
+        fieldTitle: 'Your Age?',
+        customErrorMessage: 'Age must be number',
+      },
+      {
+        id: '1730275681654',
+        fileSize: 0,
+        maxLength: 0,
+        required: false,
+        fieldType: 'text',
+        fileTypes: [],
+        fieldTitle: 'Your Name?',
+        customErrorMessage: '',
+      },
+    ],
+    isRepeatable: true,
+  },
+  {
+    id: '1730275721696',
+    title: 'Section 2',
+    fields: [
+      {
+        id: '1730275995437',
+        fileSize: 0,
+        maxLength: 0,
+        required: false,
         fieldType: 'textArea',
-        fieldTitle:
-          'What is your full last id as it appears on your official identification documents?',
-        required: true,
-        id: 'sadasd',
-        maxLength: 50,
+        fileTypes: [],
+        fieldTitle: 'Quote Note',
+        customErrorMessage: '',
       },
       {
-        fieldType: 'date',
-        fieldTitle:
-          'Could you please provide a contact phone number where we can reach you?',
-        required: false,
-        id: 'sadaasdsd',
+        id: '1730275978729',
+        fileSize: 5000,
+        maxLength: 0,
+        required: true,
+        fieldType: 'file',
+        fileTypes: [
+          {
+            label: 'PDF Document',
+            value: 'application/pdf',
+          },
+          {
+            label: 'Word Document',
+            value: 'application/msword',
+          },
+        ],
+        fieldTitle: 'Upload Quote Document',
+        customErrorMessage:
+          'File must be of type .pdf,.doc,.docx and file size cannot be more than 5MB',
       },
     ],
-    repeatable: false,
+    isRepeatable: false,
   },
   {
-    title: 'Document Upload',
+    id: '1730276003462',
+    title: 'Section 3',
     fields: [
       {
-        fieldType: 'file',
-        fieldTitle:
-          'Please upload a clear scan or photo of your passport (PDF, JPG, or PNG formats accepted).',
-        required: true,
-        fileSize: 10, // file size in MB
-        id: 'sdflksdfosdf',
-        fileTypes: [
-          { value: 'pdf', label: 'PDF' },
-          { value: 'jpg', label: 'JPG' },
-          { value: 'png', label: 'PNG' },
-        ],
-      },
-      {
-        fieldType: 'file',
-        fieldTitle:
-          'If applicable, please upload a clear scan or photo of your driver’s license (PDF or JPG formats accepted).',
+        id: '1730276251381',
+        fileSize: 0,
+        maxLength: 0,
         required: false,
-        fileSize: 5,
-        id: 'kjsndfknskjdfn',
-        fileTypes: [
-          { value: 'pdf', label: 'PDF' },
-          { value: 'jpg', label: 'JPG' },
-        ],
-      },
-    ],
-    repeatable: true,
-  },
-
-  {
-    title: 'Employment Details',
-    fields: [
-      {
-        fieldType: 'text',
-        fieldTitle:
-          'Please provide the full id of the company where you are currently employed or were most recently employed.',
-        required: true,
-        maxLength: 100,
-        id: 'dsfmnsdflsdf',
+        fieldType: 'textArea',
+        fileTypes: [],
+        fieldTitle: 'Notes',
+        customErrorMessage: '',
       },
       {
-        fieldType: 'text',
-        fieldTitle: 'What was your job title or position within the company?',
+        id: '1730276233733',
+        fileSize: 10,
+        maxLength: 0,
         required: false,
-        id: 'sdfsonfosfd',
+        fieldType: 'file',
+        fileTypes: [
+          {
+            label: 'PDF Document',
+            value: 'application/pdf',
+          },
+          {
+            label: 'JPEG Image',
+            value: 'image/jpeg',
+          },
+          {
+            label: 'PNG Image',
+            value: 'image/png',
+          },
+          {
+            label: 'Word Document',
+            value: 'application/msword',
+          },
+        ],
+        fieldTitle: 'Files',
+        customErrorMessage: '',
       },
-
       {
+        id: '1730276182454',
+        fileSize: 0,
+        maxLength: 0,
+        required: false,
         fieldType: 'date',
-        fieldTitle:
-          'When did you start your position at this company? (Please provide the start date)',
-        required: true,
-        id: 'sdfsdf',
+        fileTypes: [],
+        fieldTitle: 'Quote Date',
+        customErrorMessage: 'Future Dates not allowed',
+      },
+      {
+        id: '1730276143366',
+        fileSize: 0,
+        maxLength: 0,
+        required: false,
+        fieldType: 'text',
+        fileTypes: [],
+        fieldTitle: 'Customer Message',
+        customErrorMessage: '',
+      },
+      {
+        id: '1730276021886',
+        fileSize: 0,
+        maxLength: 6,
+        required: false,
+        fieldType: 'number',
+        fileTypes: [],
+        fieldTitle: 'Quote Amount',
+        customErrorMessage: '',
       },
     ],
-    repeatable: false,
+    isRepeatable: false,
+  },
+  {
+    id: '1730276959610',
+    title: 'Section 4',
+    fields: [
+      {
+        id: '1730277042521',
+        fileSize: 0,
+        maxLength: 0,
+        required: false,
+        fieldType: 'text',
+        fileTypes: [],
+        fieldTitle:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac sagittis dui. Pellentesque euismod tempor orci et faucibus. Donec sed justo fringilla, blandit enim at, malesuada tellus. Pellentesque nisi leo, tincidunt ut eros sit amet, finibus hendrerit diam. In pharetra, nunc id ultricies lacinia, orci purus sollicitudin ante, at convallis mauris enim sed libero. ',
+        customErrorMessage: '',
+      },
+      {
+        id: '1730276996890',
+        fileSize: 0,
+        maxLength: 0,
+        required: true,
+        fieldType: 'number',
+        fileTypes: [],
+        fieldTitle:
+          'On a scale of 1 to 10 (1 being "extremely quickly" and 10 being "extremely slowly"), how fast were you able to solve your problem?',
+        customErrorMessage: '',
+      },
+    ],
+    isRepeatable: false,
   },
 ];
 
