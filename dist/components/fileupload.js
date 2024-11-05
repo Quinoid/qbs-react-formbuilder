@@ -62,7 +62,7 @@ onFileChange, errors, disabled, value, name, }) => {
     return (react_1.default.createElement("div", { className: "file-upload-container" },
         react_1.default.createElement("label", { htmlFor: name, className: `file-upload-label ${disabled ? 'disabled' : ''}` },
             react_1.default.createElement("span", { className: "upload-icon" }, "\uD83D\uDCC1"),
-            react_1.default.createElement("span", { className: "upload-text" }, file ? 'Change File' : 'Upload File')),
+            react_1.default.createElement("span", { className: "upload-text" }, file || value ? 'Change File' : 'Upload File')),
         react_1.default.createElement("input", { id: name, type: "file", name: name, onChange: handleFileChange, accept: allowedFileTypes.join(','), disabled: disabled, style: { display: 'none' } }),
         file ? (react_1.default.createElement("div", { className: "uploaded-file-info" },
             react_1.default.createElement("p", null,
@@ -70,9 +70,7 @@ onFileChange, errors, disabled, value, name, }) => {
                 file.name),
             react_1.default.createElement("button", { onClick: handleRemoveFile, className: "remove-file-button" }, "Remove"))) : (value &&
             value !== 'null' && (react_1.default.createElement("div", { className: "uploaded-file-info" },
-            react_1.default.createElement("a", { href: value.link },
-                "Uploaded file : ",
-                value.name)))),
+            react_1.default.createElement("a", { className: "qbs-uploaded-file", href: value.link }, value.name)))),
         error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
 };
 exports.default = FileUpload;

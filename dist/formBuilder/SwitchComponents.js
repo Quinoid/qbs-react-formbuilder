@@ -36,10 +36,10 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
     const textareaRef = (0, react_1.useRef)(null);
     const { control, register, setValue } = (0, react_hook_form_1.useFormContext)();
     const handleTextareaChange = (value) => {
-        setValue(field.id, value, { shouldValidate: true });
+        setValue(field.id, value, { shouldValidate: true, shouldDirty: true });
     };
     const onFileChange = (value, name) => {
-        setValue(name, value, { shouldValidate: true });
+        setValue(name, value, { shouldValidate: true, shouldDirty: true });
     };
     const watchedFileValue = (0, react_hook_form_1.useWatch)({ name: field.id });
     switch (field.fieldType) {

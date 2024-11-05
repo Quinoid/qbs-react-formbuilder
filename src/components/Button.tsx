@@ -7,6 +7,7 @@ interface ButtonProps {
   onClick: () => void;
   type?: 'primary' | 'secondary';
   disabled?: boolean;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,12 +15,17 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   type = 'primary',
   disabled = false,
+  className,
 }) => {
   const buttonClass =
-    type === 'primary' ? 'btn btn-primary' : 'btn btn-secondary';
+    type === 'primary' ? 'btn btn-primary' : 'btn btn-secondary outline-button';
 
   return (
-    <button className={buttonClass} onClick={onClick} disabled={disabled}>
+    <button
+      className={`${buttonClass} ${className}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {label}
     </button>
   );

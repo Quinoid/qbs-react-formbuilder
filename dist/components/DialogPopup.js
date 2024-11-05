@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const Button_1 = __importDefault(require("./Button"));
-const Popup = ({ isOpen, onClose, onSubmit, title, children, actionLabel = 'Create', }) => {
+const Popup = ({ isOpen, onClose, onSubmit, title, children, actionLabel = 'Create', secondaryAction, }) => {
     if (!isOpen)
         return null;
     return (react_1.default.createElement("div", { className: "popup-overlay" },
@@ -16,7 +16,8 @@ const Popup = ({ isOpen, onClose, onSubmit, title, children, actionLabel = 'Crea
                 react_1.default.createElement("button", { className: "popup-close", onClick: onClose, "aria-label": "Close" }, "\u00D7")),
             react_1.default.createElement("div", { className: "popup-body" }, children),
             react_1.default.createElement("div", { className: " popup-action" },
-                react_1.default.createElement(Button_1.default, { label: actionLabel, onClick: onSubmit })))));
+                react_1.default.createElement(Button_1.default, { label: actionLabel, onClick: onSubmit }),
+                secondaryAction))));
 };
 exports.default = Popup;
 //# sourceMappingURL=DialogPopup.js.map

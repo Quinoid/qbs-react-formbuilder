@@ -6,6 +6,7 @@ interface PopupProps {
     children: React.ReactNode;
     onSubmit?: () => void;
     actionLabel?: string;
+    secondaryAction?: React.ReactNode;
 }
 declare const Popup: React.FC<PopupProps>;
 export default Popup;

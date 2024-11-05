@@ -4,29 +4,47 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import Button from '../components/Button';
-import { Question, SectionIcon } from '../components/Icons';
+import {
+  Question,
+  SectionIcon,
+  PlusIcon,
+  CloseIcon,
+} from '../components/Icons';
 import { FieldType } from '../types';
+import Tooltip from '../utilities/tootltip';
 import { generateDynamicSchema } from './dynamicSchema';
 import SwitchComponents from './SwitchComponents';
+import WarningPopup from './WaringPopup';
 
 type Props = {
   formContent?: {
     title: string;
+    id?: string;
+    sectionId?: string;
     fields: FieldType[];
     isRepeatable: boolean;
+    isDuplicate?: boolean;
   }[];
   formTitle?: string;
   formValues?: any;
   updateFormContent?: (data: any, msg?: string) => Promise<boolean>;
+  updateFormSection?: (data: any, msg?: string) => void;
 };
 const DynamicForm: React.FC<Props> = ({
   formContent,
   updateFormContent,
   formValues,
   formTitle,
+  updateFormSection,
 }) => {
   const [edit, setEdit] = useState(false);
-  const schema = generateDynamicSchema(formContent);
+  const [sections, setSections] = useState(formContent || []);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false);
+  const [currentSectionId, setCurrentSectionId] = useState<any>(null);
+  const [currentIndex, setCurrentIndex] = useState<any>(null);
+  const [updateSectionCount, setUpdateSectionCount] = useState(0);
+  const schema = generateDynamicSchema(sections);
   const getInitialData = () => {
     if (!formValues) return {};
     const data: any = formValues;
@@ -42,11 +60,16 @@ const DynamicForm: React.FC<Props> = ({
   useEffect(() => {
     methods.reset(getInitialData());
   }, [formValues]);
+  const { isDirty } = methods.formState;
 
   const updateForm = async (data: any) => {
+    if (!isDirty) {
+      updateFormContent(sections, 'No changes to save');
+      return;
+    }
     const result: Record<string, { value: any; type: string }> = {};
 
-    formContent.forEach((section) => {
+    sections.forEach((section) => {
       section.fields.forEach((field) => {
         const fieldValue = data[field.id];
 
@@ -55,7 +78,6 @@ const DynamicForm: React.FC<Props> = ({
     });
 
     const res = await updateFormContent(result);
-    console.log(res);
     if (res) {
       setEdit(false);
     }
@@ -65,8 +87,56 @@ const DynamicForm: React.FC<Props> = ({
     methods.reset(getInitialData());
     setEdit(false);
   };
+  const handleAddSection = (sectionIndex: number) => {
+    setSections((prevSections) => {
+      const newSection = {
+        ...prevSections[sectionIndex],
+        isRepeatable: false,
+        isDuplicate: true,
+        id: `${prevSections[sectionIndex].id}_${Date.now()}`, // Creating a unique section ID
+        fields: prevSections[sectionIndex].fields.map((field) => ({
+          ...field,
+          id: `${field.id}_${Date.now()}`, // Creating a unique ID for each field
+        })),
+      };
+
+      // Insert the new section right after the original section
+      const updatedSections = [
+        ...prevSections.slice(0, sectionIndex + 1),
+        newSection,
+        ...prevSections.slice(sectionIndex + 1),
+      ];
+
+      return updatedSections;
+    });
+    setUpdateSectionCount(updateSectionCount + 1);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (updateFormSection && updateSectionCount > 0) {
+      updateFormSection(sections);
+    }
+  }, [updateSectionCount]);
+
+  const handleRemoveSection = (sectionId: string) => {
+    setSections((prevSections) =>
+      prevSections.filter((section) => section.id !== sectionId)
+    );
+    setUpdateSectionCount(updateSectionCount + 1);
+    setIsRemoveOpen(false);
+  };
+  const handleConfirmDuplicate = (index: number) => {
+    setIsOpen(true);
+    setCurrentIndex(index);
+  };
+  const handleConfirmRemove = (sectionId: string) => {
+    setIsRemoveOpen(true);
+    setCurrentSectionId(sectionId);
+  };
 
   const { errors } = methods.formState;
+
   return (
     <div className="preview-container">
       <div className="section-header">
@@ -85,11 +155,35 @@ const DynamicForm: React.FC<Props> = ({
         </div>
       </div>
       <FormProvider {...methods}>
-        {formContent.map((section: any) => (
+        {sections.map((section: any, index: number) => (
           <div key={section.id} className="preview-section">
-            <div className="preview-section-title-container">
-              <SectionIcon className="section-item-icon" />
-              <div className="preview-section-item-title">{section.title}</div>
+            <div className="preview-section-head-container">
+              <div className="preview-section-title-container">
+                <SectionIcon className="section-item-icon" />
+                <div className="preview-section-item-title">
+                  {section.title}
+                </div>
+              </div>
+              {section.isRepeatable && edit && (
+                <Tooltip title="Duplicate Section">
+                  <span
+                    className="text-primary"
+                    onClick={() => handleConfirmDuplicate(index)}
+                  >
+                    <PlusIcon />
+                  </span>
+                </Tooltip>
+              )}
+              {section.isDuplicate && edit && (
+                <Tooltip title="Remove Section">
+                  <span
+                    className="text-[red] "
+                    onClick={() => handleConfirmRemove(section.id)}
+                  >
+                    <CloseIcon />
+                  </span>
+                </Tooltip>
+              )}
             </div>
             {section.fields.map((field: any) => (
               <div key={field.id}>
@@ -116,6 +210,20 @@ const DynamicForm: React.FC<Props> = ({
           </div>
         ))}
       </FormProvider>
+      <WarningPopup
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        content="Are you sure you want to duplicate this section?"
+        handleSubmit={() => handleAddSection(currentIndex)}
+        title="Duplicate Section"
+      />
+      <WarningPopup
+        isOpen={isRemoveOpen}
+        setIsOpen={setIsRemoveOpen}
+        content="Are you sure you want to remove this section?"
+        handleSubmit={() => handleRemoveSection(currentSectionId)}
+        title="Remove Section"
+      />
     </div>
   );
 };

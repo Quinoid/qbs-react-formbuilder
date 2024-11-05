@@ -9,6 +9,7 @@ interface PopupProps {
   children: React.ReactNode;
   onSubmit?: () => void;
   actionLabel?: string;
+  secondaryAction?: React.ReactNode;
 }
 
 const Popup: React.FC<PopupProps> = ({
@@ -18,6 +19,7 @@ const Popup: React.FC<PopupProps> = ({
   title,
   children,
   actionLabel = 'Create',
+  secondaryAction,
 }) => {
   if (!isOpen) return null;
 
@@ -33,6 +35,7 @@ const Popup: React.FC<PopupProps> = ({
         <div className="popup-body">{children}</div>
         <div className=" popup-action">
           <Button label={actionLabel} onClick={onSubmit} />
+          {secondaryAction}
         </div>
       </div>
     </div>

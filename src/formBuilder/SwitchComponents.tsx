@@ -18,10 +18,10 @@ const SwitchComponents: React.FC<Props> = React.memo(
 
     const { control, register, setValue } = useFormContext();
     const handleTextareaChange = (value: string) => {
-      setValue(field.id, value, { shouldValidate: true });
+      setValue(field.id, value, { shouldValidate: true, shouldDirty: true });
     };
     const onFileChange = (value: any, name: string) => {
-      setValue(name, value, { shouldValidate: true });
+      setValue(name, value, { shouldValidate: true, shouldDirty: true });
     };
     const watchedFileValue = useWatch({ name: field.id });
     switch (field.fieldType) {

@@ -66,7 +66,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         <span className="upload-icon">📁</span>
         {/* Replace with your custom icon */}
         <span className="upload-text">
-          {file ? 'Change File' : 'Upload File'}
+          {file || value ? 'Change File' : 'Upload File'}
         </span>
       </label>
       <input
@@ -89,7 +89,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         value &&
         value !== 'null' && (
           <div className="uploaded-file-info">
-            <a href={value.link}>Uploaded file : {value.name}</a>
+            <a className="qbs-uploaded-file" href={value.link}>
+              {value.name}
+            </a>
           </div>
         )
       )}
