@@ -26,7 +26,7 @@ const WarningPopup: React.FC<any> = ({
         />
       }
     >
-      <div className="popup-form text-sm text-center">
+      <div className="popup-form text-sm ">
         <p> {content}</p>
       </div>
     </Popup>

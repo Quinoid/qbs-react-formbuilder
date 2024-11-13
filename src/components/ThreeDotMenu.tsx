@@ -4,7 +4,9 @@ import { ThreeDot } from './Icons';
 const ThreeDotMenuDropdown: React.FC<any> = ({ options, handleMenuAction }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
   // Toggle the dropdown visibility
   const toggleDropdown = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -24,6 +26,23 @@ const ThreeDotMenuDropdown: React.FC<any> = ({ options, handleMenuAction }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen && buttonRef.current && menuRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const dropdownRect = menuRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - buttonRect.bottom;
+      const spaceAbove = buttonRect.top;
+
+      if (
+        spaceBelow < dropdownRect.height &&
+        spaceAbove > dropdownRect.height
+      ) {
+        setPosition('top');
+      } else {
+        setPosition('bottom');
+      }
+    }
+  }, [isOpen]);
   return (
     <div
       className="menu-container"
@@ -35,13 +54,20 @@ const ThreeDotMenuDropdown: React.FC<any> = ({ options, handleMenuAction }) => {
         className="three-dot-button"
         onClick={toggleDropdown}
         style={buttonStyle}
+        ref={buttonRef}
       >
         <ThreeDot />
       </button>
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="dropdown-menu" style={dropdownStyle}>
+        <div
+          className="dropdown-menus"
+          style={{
+            ...dropdownStyle,
+            [position]: '100%',
+          }}
+        >
           <ul style={menuStyle}>
             {options.map((option: any, index: number) => (
               <li
@@ -72,8 +98,6 @@ const buttonStyle: React.CSSProperties = {
 
 const dropdownStyle: React.CSSProperties = {
   position: 'absolute',
-  top: '100%',
-  right: '0',
   backgroundColor: 'white',
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
   borderRadius: '4px',

@@ -60,6 +60,7 @@
 .popup-action {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 }
 .section-button-container {
   display: flex;
@@ -128,4 +129,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.preview-section-head-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

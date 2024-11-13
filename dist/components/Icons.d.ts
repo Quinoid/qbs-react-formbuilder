@@ -8,3 +8,4 @@ export declare const SectionIcon: React.FC<any>;
 export declare const Question: React.FC<any>;
 export declare const DuplicateIcon: React.FC<any>;
 export declare const CloseIcon: React.FC;
+export declare const EmptyIcon: () => React.JSX.Element;

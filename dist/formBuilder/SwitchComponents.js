@@ -36,7 +36,10 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
     const textareaRef = (0, react_1.useRef)(null);
     const { control, register, setValue } = (0, react_hook_form_1.useFormContext)();
     const handleTextareaChange = (value) => {
-        setValue(field.id, value, { shouldValidate: true, shouldDirty: true });
+        setValue(field.id, value.trimStart(), {
+            shouldValidate: true,
+            shouldDirty: true,
+        });
     };
     const onFileChange = (value, name) => {
         setValue(name, value, { shouldValidate: true, shouldDirty: true });
@@ -44,10 +47,14 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
     const watchedFileValue = (0, react_hook_form_1.useWatch)({ name: field.id });
     switch (field.fieldType) {
         case 'text':
-            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id), { error: errors })));
+            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id, {
+                setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
+            }), { error: errors })));
         case 'number':
             return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id, {
-                setValueAs: (value) => value === '' ? undefined : parseInt(value, 10), // Parse as integer
+                setValueAs: (value) => typeof value === 'string' && value.trim() !== ''
+                    ? parseInt(value.trimStart(), 10)
+                    : undefined,
             }), { error: errors })));
         case 'textArea':
             return (react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: field.id, render: ({ field: { onChange, value } }) => (react_1.default.createElement(expandableTextArea_1.default, Object.assign({ onDataChange: handleTextareaChange, ref: textareaRef, label: "", value: value }, register(field.id), { error: errors, disabled: !editable, placeholder: "Enter your description here...", maxRows: 3 }))) }));
@@ -59,7 +66,9 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
                     return (react_1.default.createElement(fileupload_1.default, { key: field.id, onFileChange: (file) => onFileChange(file, field.id), errors: errors, name: field.id, maxSize: field.fileSize, disabled: !editable, value: watchedFileValue, allowedFileTypes: (_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value) }));
                 } }));
         default:
-            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: "text" }, register(field.id), { error: errors })));
+            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: "text" }, register(field.id, {
+                setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
+            }), { error: errors })));
     }
 });
 exports.default = SwitchComponents;

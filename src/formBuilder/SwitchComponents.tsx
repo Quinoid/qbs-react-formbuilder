@@ -17,9 +17,14 @@ const SwitchComponents: React.FC<Props> = React.memo(
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const { control, register, setValue } = useFormContext();
+
     const handleTextareaChange = (value: string) => {
-      setValue(field.id, value, { shouldValidate: true, shouldDirty: true });
+      setValue(field.id, value.trimStart(), {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     };
+
     const onFileChange = (value: any, name: string) => {
       setValue(name, value, { shouldValidate: true, shouldDirty: true });
     };
@@ -30,7 +35,10 @@ const SwitchComponents: React.FC<Props> = React.memo(
           <TextField
             disabled={!editable}
             type={field.fieldType}
-            {...register(field.id)}
+            {...register(field.id, {
+              setValueAs: (value) =>
+                typeof value === 'string' ? value.trimStart() : value,
+            })}
             error={errors}
           />
         );
@@ -42,7 +50,9 @@ const SwitchComponents: React.FC<Props> = React.memo(
             type={field.fieldType}
             {...register(field.id, {
               setValueAs: (value) =>
-                value === '' ? undefined : parseInt(value, 10), // Parse as integer
+                typeof value === 'string' && value.trim() !== ''
+                  ? parseInt(value.trimStart(), 10)
+                  : undefined,
             })}
             error={errors}
           />
@@ -108,7 +118,10 @@ const SwitchComponents: React.FC<Props> = React.memo(
           <TextField
             disabled={!editable}
             type="text"
-            {...register(field.id)}
+            {...register(field.id, {
+              setValueAs: (value) =>
+                typeof value === 'string' ? value.trimStart() : value,
+            })}
             error={errors}
           />
         );

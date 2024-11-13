@@ -62,9 +62,11 @@ const CreateSection = ({ openSection, onSubmitData, setOpenSection, edit, data, 
             }
         }
     }, [openSection, data]);
-    return (react_1.default.createElement(DialogPopup_1.default, { isOpen: openSection, onClose: () => setOpenSection(false), title: edit ? 'Update Section' : 'Create Section', onSubmit: handleSubmit(onSubmit), actionLabel: edit ? 'Upadte' : 'Create' },
+    return (react_1.default.createElement(DialogPopup_1.default, { isOpen: openSection, onClose: () => setOpenSection(false), title: edit ? 'Update Section' : 'Create Section', onSubmit: handleSubmit(onSubmit), actionLabel: edit ? 'Update' : 'Create' },
         react_1.default.createElement("div", { className: "popup-form" },
-            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "title", placeholder: "Section Title", type: "text", label: "Section Title", required: true }, register('title'), { error: (_a = errors.title) === null || _a === void 0 ? void 0 : _a.message })),
+            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "title", placeholder: "Section Title", type: "text", label: "Section Title", required: true }, register('title', {
+                setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
+            }), { error: (_a = errors.title) === null || _a === void 0 ? void 0 : _a.message })),
             react_1.default.createElement(CheckBox_1.default, Object.assign({ label: "Repeatable" }, register('isRepeatable'))))));
 };
 exports.default = CreateSection;

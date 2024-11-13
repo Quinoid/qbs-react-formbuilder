@@ -53,7 +53,7 @@ const CreateSection: React.FC<any> = ({
       onClose={() => setOpenSection(false)}
       title={edit ? 'Update Section' : 'Create Section'}
       onSubmit={handleSubmit(onSubmit)}
-      actionLabel={edit ? 'Upadte' : 'Create'}
+      actionLabel={edit ? 'Update' : 'Create'}
     >
       <div className="popup-form">
         <TextField
@@ -62,7 +62,10 @@ const CreateSection: React.FC<any> = ({
           type="text"
           label="Section Title"
           required
-          {...register('title')}
+          {...register('title', {
+            setValueAs: (value) =>
+              typeof value === 'string' ? value.trimStart() : value,
+          })}
           error={errors.title?.message}
         />
         <CheckboxField label="Repeatable" {...register('isRepeatable')} />

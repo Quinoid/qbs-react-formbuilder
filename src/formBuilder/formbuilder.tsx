@@ -8,13 +8,14 @@ import {
   PlusIcon,
   Question,
   SectionIcon,
+  EmptyIcon,
 } from '../components/Icons';
 import ThreeDotMenuDropdown from '../components/ThreeDotMenu';
 import { FieldType } from '../types';
 import CreateField from './CreateField';
 import CreateSection from './CreateSection';
 import FormPreview from './FormPreview';
-
+import WarningPopup from './WaringPopup';
 const options = [
   { value: 'number', label: 'Number' },
   { value: 'text', label: 'Text' },
@@ -44,10 +45,15 @@ type Props = {
     fields: FieldType[];
     isRepeatable: boolean;
   }[];
+  isLoading?: boolean;
   updateFormContent: (data: any, msg?: string) => void;
 };
 
-const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
+const FormBuilder: React.FC<Props> = ({
+  formContent,
+  updateFormContent,
+  isLoading,
+}) => {
   const [sections, setSections] = useState<any>([]);
 
   const [draggedSection, setDraggedSection] = useState<any>(null);
@@ -61,6 +67,10 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
   const [currentField, setCurrentField] = useState<any>(null);
   const [message, setMessage] = useState<any>('');
   const [openPreview, setOpenPreview] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false);
+  const [currentFieldId, setcurrentFieldId] = useState<any>(null);
+  const [currentIndex, setCurrentIndex] = useState<any>(null);
   useEffect(() => {
     setSections(formContent);
   }, [formContent]);
@@ -215,7 +225,7 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
     setOpenField(true);
     setCurrentField(fieldId);
   };
- 
+
   const handleDuplicate = (section: any) => {
     const result = [...sections]; // Create a shallow copy of sections
     const newSection = {
@@ -233,7 +243,8 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
 
   const handleMenuAction = (option: any, section: any) => {
     if (option.slug === 'delete-section') {
-      handleDelete(section?.id);
+      setCurrentIndex(section?.id);
+      setIsOpen(true);
     } else if (option.slug === 'duplicate-section') {
       handleDuplicate(section);
     } else if (option.slug === 'edit-section') {
@@ -244,12 +255,22 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
   };
   const handleFieldMenuAction = (option: any, section: any, field: any) => {
     if (option.slug === 'delete-field') {
-      handleDeleteField(section?.id, field?.id);
+      setcurrentFieldId(field?.id);
+      setCurrentIndex(section?.id);
+      setIsRemoveOpen(true);
     } else if (option.slug === 'duplicate-field') {
       handleDeleteField(section?.id, field);
     } else if (option.slug === 'edit-field') {
       handleEditField(section, field);
     }
+  };
+  const handleRemoveField = () => {
+    handleDeleteField(currentIndex, currentFieldId);
+    setIsRemoveOpen(false);
+  };
+  const handleDeleteSection = () => {
+    handleDelete(currentIndex);
+    setIsOpen(false);
   };
   if (openPreview) {
     return (
@@ -345,20 +366,30 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
             ))}
           </div>
         ) : (
-          <div className="flexbox-center">
-            <div
-              style={{
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-                alignItems: 'center',
-              }}
-            >
-              <p>Create New Section using this button</p>
-              <Button label="Create" onClick={() => setOpenSection(true)} />
+          !isLoading && (
+            <div className="flexbox-center">
+              <div
+                style={{
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                  alignItems: 'center',
+                }}
+              >
+                <div className="flex flex-col items-center justify-center py-10">
+                  <EmptyIcon />
+                  <p className="text-sm font-bold text-primaryText dark:text-white mt-5">
+                    No Sections available
+                  </p>
+                  <p className="text-xxs leading-4 font-medium text-secondary dark:text-white mb-5">
+                    Add a new section by clicking on the “Create” button below
+                  </p>
+                  <Button label="Create" onClick={() => setOpenSection(true)} />
+                </div>
+              </div>
             </div>
-          </div>
+          )
         )}
       </div>
 
@@ -378,6 +409,20 @@ const FormBuilder: React.FC<Props> = ({ formContent, updateFormContent }) => {
         openField={openField}
         setOpenField={setOpenField}
         onSubmitField={onSubmitField}
+      />
+      <WarningPopup
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        content="Are you sure you want to delete this section?"
+        handleSubmit={() => handleDeleteSection()}
+        title="Delete Section"
+      />
+      <WarningPopup
+        isOpen={isRemoveOpen}
+        setIsOpen={setIsRemoveOpen}
+        content="Are you sure you want to delete this field?"
+        handleSubmit={() => handleRemoveField()}
+        title="Delete Field"
       />
     </div>
   );

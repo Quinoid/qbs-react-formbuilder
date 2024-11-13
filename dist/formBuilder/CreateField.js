@@ -121,18 +121,20 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleTextareaChange = (value) => {
-        setValue('fieldTitle', value, { shouldValidate: true });
+        setValue('fieldTitle', value.trimStart(), { shouldValidate: true });
     };
-    return (react_1.default.createElement(DialogPopup_1.default, { isOpen: openField, onClose: () => setOpenField(false), actionLabel: edit ? 'Upadte' : 'Create', title: edit ? 'Update Field' : 'Add Field', onSubmit: handleSubmit(onSubmit) },
+    return (react_1.default.createElement(DialogPopup_1.default, { isOpen: openField, onClose: () => setOpenField(false), actionLabel: edit ? 'Update' : 'Create', title: edit ? 'Update Field' : 'Add Field', onSubmit: handleSubmit(onSubmit) },
         react_1.default.createElement("div", { className: "popup-form" },
             react_1.default.createElement(Select_1.default, Object.assign({ label: "Select an option", required: true, options: options }, register('fieldType'), { error: (_a = errors.fieldType) === null || _a === void 0 ? void 0 : _a.message })),
             react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: "fileTypes", render: ({ field: { onChange, value } }) => {
                     var _a;
-                    return (react_1.default.createElement(expandableTextArea_1.default, Object.assign({ onDataChange: handleTextareaChange, ref: textareaRef }, register('fieldTitle'), { label: "Field Description", error: (_a = errors.fieldTitle) === null || _a === void 0 ? void 0 : _a.message, placeholder: "Enter your description here...", maxRows: 3 })));
+                    return (react_1.default.createElement(expandableTextArea_1.default, Object.assign({ onDataChange: handleTextareaChange, ref: textareaRef }, register('fieldTitle', {
+                        setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
+                    }), { label: "Field Description", error: (_a = errors.fieldTitle) === null || _a === void 0 ? void 0 : _a.message, placeholder: "Enter your description here...", maxRows: 3 })));
                 } }),
             fieldType === 'file' && (react_1.default.createElement(react_1.default.Fragment, null,
-                react_1.default.createElement(Textfield_1.default, Object.assign({ name: "fileSize", placeholder: "File Size", required: true, label: "File Size" }, register('fileSize', {
-                    setValueAs: (value) => parseInt(value, 10) || 0,
+                react_1.default.createElement(Textfield_1.default, Object.assign({ name: "fileSize", placeholder: "File Size", required: true, type: "number", label: "File Size" }, register('fileSize', {
+                    setValueAs: (value) => value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
                 }), { error: (_b = errors.fileSize) === null || _b === void 0 ? void 0 : _b.message })),
                 react_1.default.createElement("div", { className: "textfield-container" },
                     react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: "fileTypes", render: ({ field: { onChange, value } }) => {
@@ -141,9 +143,11 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
                         } })))),
             fieldType === 'text' ||
                 (fieldType === 'number' && (react_1.default.createElement(Textfield_1.default, Object.assign({ name: "maxLength", placeholder: "Max Length", label: "Max Length" }, register('maxLength', {
-                    setValueAs: (value) => parseInt(value, 10) || 0,
+                    setValueAs: (value) => value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
                 }), { error: (_c = errors.maxLength) === null || _c === void 0 ? void 0 : _c.message })))),
-            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "customErrorMessage", placeholder: "Custom Error Message", label: "Custom Error Message" }, register('customErrorMessage'), { error: (_d = errors.customErrorMessage) === null || _d === void 0 ? void 0 : _d.message })),
+            react_1.default.createElement(Textfield_1.default, Object.assign({ name: "customErrorMessage", placeholder: "Custom Error Message", label: "Custom Error Message" }, register('customErrorMessage', {
+                setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
+            }), { error: (_d = errors.customErrorMessage) === null || _d === void 0 ? void 0 : _d.message })),
             react_1.default.createElement(CheckBox_1.default, Object.assign({ label: "Required" }, register('required'))))));
 };
 exports.default = CreateField;

@@ -59,6 +59,9 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
         const data = formValues;
         return data;
     };
+    (0, react_1.useEffect)(() => {
+        setSections(formContent);
+    }, [formContent]);
     const methods = (0, react_hook_form_1.useForm)({
         resolver: (0, zod_1.zodResolver)(schema),
         defaultValues: getInitialData(),
@@ -69,17 +72,20 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
     const { isDirty } = methods.formState;
     const updateForm = (data) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isDirty) {
-            updateFormContent(sections, 'No changes to save');
+            updateFormContent({}, sections, 'No changes to save');
             return;
         }
         const result = {};
         sections.forEach((section) => {
             section.fields.forEach((field) => {
                 const fieldValue = data[field.id];
-                result[field.id] = { value: fieldValue, type: field.fieldType };
+                result[`${field.id}`] = {
+                    value: fieldValue,
+                    type: field.fieldType,
+                };
             });
         });
-        const res = yield updateFormContent(result);
+        const res = yield updateFormContent(result, sections);
         if (res) {
             setEdit(false);
         }
@@ -90,7 +96,7 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
     };
     const handleAddSection = (sectionIndex) => {
         setSections((prevSections) => {
-            const newSection = Object.assign(Object.assign({}, prevSections[sectionIndex]), { isRepeatable: false, isDuplicate: true, id: `${prevSections[sectionIndex].id}_${Date.now()}`, fields: prevSections[sectionIndex].fields.map((field) => (Object.assign(Object.assign({}, field), { id: `${field.id}_${Date.now()}` }))) });
+            const newSection = Object.assign(Object.assign({}, prevSections[sectionIndex]), { isRepeatable: false, isDuplicate: true, parentId: prevSections[sectionIndex].id, id: `${Date.now()}`, fields: prevSections[sectionIndex].fields.map((field) => (Object.assign(Object.assign({}, field), { id: `${Date.now()}` }))) });
             // Insert the new section right after the original section
             const updatedSections = [
                 ...prevSections.slice(0, sectionIndex + 1),
@@ -102,11 +108,6 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
         setUpdateSectionCount(updateSectionCount + 1);
         setIsOpen(false);
     };
-    (0, react_1.useEffect)(() => {
-        if (updateFormSection && updateSectionCount > 0) {
-            updateFormSection(sections);
-        }
-    }, [updateSectionCount]);
     const handleRemoveSection = (sectionId) => {
         setSections((prevSections) => prevSections.filter((section) => section.id !== sectionId));
         setUpdateSectionCount(updateSectionCount + 1);
@@ -128,16 +129,17 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
                 react_1.default.createElement(Button_1.default, { label: "Save", onClick: methods.handleSubmit(updateForm) }),
                 react_1.default.createElement(Button_1.default, { label: "Cancel", type: "secondary", onClick: handleReset }))) : (react_1.default.createElement(Button_1.default, { label: "Edit", onClick: () => setEdit(true) })))),
         react_1.default.createElement(react_hook_form_1.FormProvider, Object.assign({}, methods), sections.map((section, index) => (react_1.default.createElement("div", { key: section.id, className: "preview-section" },
-            react_1.default.createElement("div", { className: "preview-section-head-container" },
+            react_1.default.createElement("div", { className: "preview-section-head-container " },
                 react_1.default.createElement("div", { className: "preview-section-title-container" },
                     react_1.default.createElement(Icons_1.SectionIcon, { className: "section-item-icon" }),
                     react_1.default.createElement("div", { className: "preview-section-item-title" }, section.title)),
-                section.isRepeatable && edit && (react_1.default.createElement(tootltip_1.default, { title: "Duplicate Section" },
-                    react_1.default.createElement("span", { className: "text-primary", onClick: () => handleConfirmDuplicate(index) },
-                        react_1.default.createElement(Icons_1.PlusIcon, null)))),
-                section.isDuplicate && edit && (react_1.default.createElement(tootltip_1.default, { title: "Remove Section" },
-                    react_1.default.createElement("span", { className: "text-[red] ", onClick: () => handleConfirmRemove(section.id) },
-                        react_1.default.createElement(Icons_1.CloseIcon, null))))),
+                react_1.default.createElement("div", { style: { position: 'relative' } },
+                    section.isRepeatable && edit && (react_1.default.createElement(tootltip_1.default, { title: "Duplicate Section" },
+                        react_1.default.createElement("span", { className: "text-primary", onClick: () => handleConfirmDuplicate(index) },
+                            react_1.default.createElement(Icons_1.PlusIcon, null)))),
+                    section.isDuplicate && edit && (react_1.default.createElement(tootltip_1.default, { title: "Remove Section" },
+                        react_1.default.createElement("span", { style: { color: '#e65f5f' }, onClick: () => handleConfirmRemove(section.id) },
+                            react_1.default.createElement(Icons_1.CloseIcon, null)))))),
             section.fields.map((field) => {
                 var _a;
                 return (react_1.default.createElement("div", { key: field.id },

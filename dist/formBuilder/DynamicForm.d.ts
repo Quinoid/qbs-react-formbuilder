@@ -11,7 +11,7 @@ type Props = {
     }[];
     formTitle?: string;
     formValues?: any;
-    updateFormContent?: (data: any, msg?: string) => Promise<boolean>;
+    updateFormContent?: (data: any, sections: any, msg?: string) => Promise<boolean>;
     updateFormSection?: (data: any, msg?: string) => void;
 };
 declare const DynamicForm: React.FC<Props>;

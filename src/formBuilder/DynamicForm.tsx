@@ -5,10 +5,10 @@ import { z } from 'zod';
 
 import Button from '../components/Button';
 import {
+  CloseIcon,
+  PlusIcon,
   Question,
   SectionIcon,
-  PlusIcon,
-  CloseIcon,
 } from '../components/Icons';
 import { FieldType } from '../types';
 import Tooltip from '../utilities/tootltip';
@@ -27,7 +27,11 @@ type Props = {
   }[];
   formTitle?: string;
   formValues?: any;
-  updateFormContent?: (data: any, msg?: string) => Promise<boolean>;
+  updateFormContent?: (
+    data: any,
+    sections: any,
+    msg?: string
+  ) => Promise<boolean>;
   updateFormSection?: (data: any, msg?: string) => void;
 };
 const DynamicForm: React.FC<Props> = ({
@@ -51,6 +55,9 @@ const DynamicForm: React.FC<Props> = ({
 
     return data;
   };
+  useEffect(() => {
+    setSections(formContent);
+  }, [formContent]);
   type FormSchema = z.infer<typeof schema>;
   const methods = useForm<FormSchema>({
     resolver: zodResolver(schema),
@@ -64,7 +71,7 @@ const DynamicForm: React.FC<Props> = ({
 
   const updateForm = async (data: any) => {
     if (!isDirty) {
-      updateFormContent(sections, 'No changes to save');
+      updateFormContent({}, sections, 'No changes to save');
       return;
     }
     const result: Record<string, { value: any; type: string }> = {};
@@ -73,11 +80,14 @@ const DynamicForm: React.FC<Props> = ({
       section.fields.forEach((field) => {
         const fieldValue = data[field.id];
 
-        result[field.id] = { value: fieldValue, type: field.fieldType };
+        result[`${field.id}`] = {
+          value: fieldValue,
+          type: field.fieldType,
+        };
       });
     });
 
-    const res = await updateFormContent(result);
+    const res = await updateFormContent(result, sections);
     if (res) {
       setEdit(false);
     }
@@ -93,10 +103,11 @@ const DynamicForm: React.FC<Props> = ({
         ...prevSections[sectionIndex],
         isRepeatable: false,
         isDuplicate: true,
-        id: `${prevSections[sectionIndex].id}_${Date.now()}`, // Creating a unique section ID
+        parentId: prevSections[sectionIndex].id,
+        id: `${Date.now()}`, // Creating a unique section ID
         fields: prevSections[sectionIndex].fields.map((field) => ({
           ...field,
-          id: `${field.id}_${Date.now()}`, // Creating a unique ID for each field
+          id: `${Date.now()}`, // Creating a unique ID for each field
         })),
       };
 
@@ -112,12 +123,6 @@ const DynamicForm: React.FC<Props> = ({
     setUpdateSectionCount(updateSectionCount + 1);
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    if (updateFormSection && updateSectionCount > 0) {
-      updateFormSection(sections);
-    }
-  }, [updateSectionCount]);
 
   const handleRemoveSection = (sectionId: string) => {
     setSections((prevSections) =>
@@ -157,33 +162,35 @@ const DynamicForm: React.FC<Props> = ({
       <FormProvider {...methods}>
         {sections.map((section: any, index: number) => (
           <div key={section.id} className="preview-section">
-            <div className="preview-section-head-container">
+            <div className="preview-section-head-container ">
               <div className="preview-section-title-container">
                 <SectionIcon className="section-item-icon" />
                 <div className="preview-section-item-title">
                   {section.title}
                 </div>
               </div>
-              {section.isRepeatable && edit && (
-                <Tooltip title="Duplicate Section">
-                  <span
-                    className="text-primary"
-                    onClick={() => handleConfirmDuplicate(index)}
-                  >
-                    <PlusIcon />
-                  </span>
-                </Tooltip>
-              )}
-              {section.isDuplicate && edit && (
-                <Tooltip title="Remove Section">
-                  <span
-                    className="text-[red] "
-                    onClick={() => handleConfirmRemove(section.id)}
-                  >
-                    <CloseIcon />
-                  </span>
-                </Tooltip>
-              )}
+              <div style={{ position: 'relative' }}>
+                {section.isRepeatable && edit && (
+                  <Tooltip title="Duplicate Section">
+                    <span
+                      className="text-primary"
+                      onClick={() => handleConfirmDuplicate(index)}
+                    >
+                      <PlusIcon />
+                    </span>
+                  </Tooltip>
+                )}
+                {section.isDuplicate && edit && (
+                  <Tooltip title="Remove Section">
+                    <span
+                      style={{ color: '#e65f5f' }}
+                      onClick={() => handleConfirmRemove(section.id)}
+                    >
+                      <CloseIcon />
+                    </span>
+                  </Tooltip>
+                )}
+              </div>
             </div>
             {section.fields.map((field: any) => (
               <div key={field.id}>

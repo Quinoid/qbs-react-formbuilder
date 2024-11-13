@@ -33,6 +33,7 @@ const ThreeDotMenu_1 = __importDefault(require("../components/ThreeDotMenu"));
 const CreateField_1 = __importDefault(require("./CreateField"));
 const CreateSection_1 = __importDefault(require("./CreateSection"));
 const FormPreview_1 = __importDefault(require("./FormPreview"));
+const WaringPopup_1 = __importDefault(require("./WaringPopup"));
 const options = [
     { value: 'number', label: 'Number' },
     { value: 'text', label: 'Text' },
@@ -54,7 +55,7 @@ const FieldMenuOptions = [
     { label: 'Delete Field', slug: 'delete-field', icon: react_1.default.createElement(Icons_1.DeleteIcon, null) },
     { label: 'Edit Field', slug: 'edit-field', icon: react_1.default.createElement(Icons_1.EditIcon, null) },
 ];
-const FormBuilder = ({ formContent, updateFormContent }) => {
+const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
     const [sections, setSections] = (0, react_1.useState)([]);
     const [draggedSection, setDraggedSection] = (0, react_1.useState)(null);
     const [draggedField, setDraggedField] = (0, react_1.useState)(null);
@@ -67,6 +68,10 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
     const [currentField, setCurrentField] = (0, react_1.useState)(null);
     const [message, setMessage] = (0, react_1.useState)('');
     const [openPreview, setOpenPreview] = (0, react_1.useState)(false);
+    const [isOpen, setIsOpen] = (0, react_1.useState)(false);
+    const [isRemoveOpen, setIsRemoveOpen] = (0, react_1.useState)(false);
+    const [currentFieldId, setcurrentFieldId] = (0, react_1.useState)(null);
+    const [currentIndex, setCurrentIndex] = (0, react_1.useState)(null);
     (0, react_1.useEffect)(() => {
         setSections(formContent);
     }, [formContent]);
@@ -193,7 +198,8 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
     };
     const handleMenuAction = (option, section) => {
         if (option.slug === 'delete-section') {
-            handleDelete(section === null || section === void 0 ? void 0 : section.id);
+            setCurrentIndex(section === null || section === void 0 ? void 0 : section.id);
+            setIsOpen(true);
         }
         else if (option.slug === 'duplicate-section') {
             handleDuplicate(section);
@@ -207,7 +213,9 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
     };
     const handleFieldMenuAction = (option, section, field) => {
         if (option.slug === 'delete-field') {
-            handleDeleteField(section === null || section === void 0 ? void 0 : section.id, field === null || field === void 0 ? void 0 : field.id);
+            setcurrentFieldId(field === null || field === void 0 ? void 0 : field.id);
+            setCurrentIndex(section === null || section === void 0 ? void 0 : section.id);
+            setIsRemoveOpen(true);
         }
         else if (option.slug === 'duplicate-field') {
             handleDeleteField(section === null || section === void 0 ? void 0 : section.id, field);
@@ -215,6 +223,14 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
         else if (option.slug === 'edit-field') {
             handleEditField(section, field);
         }
+    };
+    const handleRemoveField = () => {
+        handleDeleteField(currentIndex, currentFieldId);
+        setIsRemoveOpen(false);
+    };
+    const handleDeleteSection = () => {
+        handleDelete(currentIndex);
+        setIsOpen(false);
     };
     if (openPreview) {
         return (react_1.default.createElement("div", { className: "preview-container" },
@@ -246,7 +262,7 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
                             react_1.default.createElement("div", { className: "section-field-item-title" }, field.fieldTitle)),
                         react_1.default.createElement("div", { className: "section-field-item-actions" },
                             react_1.default.createElement(ThreeDotMenu_1.default, { options: FieldMenuOptions, handleMenuAction: (option) => handleFieldMenuAction(option, section, field) })))))))));
-            }))) : (react_1.default.createElement("div", { className: "flexbox-center" },
+            }))) : (!isLoading && (react_1.default.createElement("div", { className: "flexbox-center" },
             react_1.default.createElement("div", { style: {
                     textAlign: 'center',
                     display: 'flex',
@@ -254,10 +270,15 @@ const FormBuilder = ({ formContent, updateFormContent }) => {
                     gap: '10px',
                     alignItems: 'center',
                 } },
-                react_1.default.createElement("p", null, "Create New Section using this button"),
-                react_1.default.createElement(Button_1.default, { label: "Create", onClick: () => setOpenSection(true) }))))),
+                react_1.default.createElement("div", { className: "flex flex-col items-center justify-center py-10" },
+                    react_1.default.createElement(Icons_1.EmptyIcon, null),
+                    react_1.default.createElement("p", { className: "text-sm font-bold text-primaryText dark:text-white mt-5" }, "No Sections available"),
+                    react_1.default.createElement("p", { className: "text-xxs leading-4 font-medium text-secondary dark:text-white mb-5" }, "Add a new section by clicking on the \u201CCreate\u201D button below"),
+                    react_1.default.createElement(Button_1.default, { label: "Create", onClick: () => setOpenSection(true) }))))))),
         react_1.default.createElement(CreateSection_1.default, { openSection: openSection, setOpenSection: setOpenSection, onSubmitData: onSubmit, edit: editsection, data: currentSection }),
-        react_1.default.createElement(CreateField_1.default, { options: options, edit: editField, data: currentField, openField: openField, setOpenField: setOpenField, onSubmitField: onSubmitField })));
+        react_1.default.createElement(CreateField_1.default, { options: options, edit: editField, data: currentField, openField: openField, setOpenField: setOpenField, onSubmitField: onSubmitField }),
+        react_1.default.createElement(WaringPopup_1.default, { isOpen: isOpen, setIsOpen: setIsOpen, content: "Are you sure you want to delete this section?", handleSubmit: () => handleDeleteSection(), title: "Delete Section" }),
+        react_1.default.createElement(WaringPopup_1.default, { isOpen: isRemoveOpen, setIsOpen: setIsRemoveOpen, content: "Are you sure you want to delete this field?", handleSubmit: () => handleRemoveField(), title: "Delete Field" })));
 };
 exports.default = FormBuilder;
 //# sourceMappingURL=formbuilder.js.map

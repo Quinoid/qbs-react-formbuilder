@@ -6,6 +6,7 @@ type Props = {
         fields: FieldType[];
         isRepeatable: boolean;
     }[];
+    isLoading?: boolean;
     updateFormContent: (data: any, msg?: string) => void;
 };
 declare const FormBuilder: React.FC<Props>;

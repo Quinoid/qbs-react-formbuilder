@@ -113,13 +113,13 @@ const CreateField: React.FC<any> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleTextareaChange = (value: string) => {
-    setValue('fieldTitle', value, { shouldValidate: true });
+    setValue('fieldTitle', value.trimStart(), { shouldValidate: true });
   };
   return (
     <Popup
       isOpen={openField}
       onClose={() => setOpenField(false)}
-      actionLabel={edit ? 'Upadte' : 'Create'}
+      actionLabel={edit ? 'Update' : 'Create'}
       title={edit ? 'Update Field' : 'Add Field'}
       onSubmit={handleSubmit(onSubmit)} // Use handleSubmit from react-hook-form
     >
@@ -139,7 +139,10 @@ const CreateField: React.FC<any> = ({
             <ExpandableTextarea
               onDataChange={handleTextareaChange}
               ref={textareaRef} // Pass the ref to the component
-              {...register('fieldTitle')}
+              {...register('fieldTitle', {
+                setValueAs: (value) =>
+                  typeof value === 'string' ? value.trimStart() : value,
+              })}
               label="Field Description"
               error={errors.fieldTitle?.message}
               placeholder="Enter your description here..."
@@ -153,9 +156,11 @@ const CreateField: React.FC<any> = ({
               name="fileSize"
               placeholder="File Size"
               required
+              type="number"
               label="File Size"
               {...register('fileSize', {
-                setValueAs: (value) => parseInt(value, 10) || 0,
+                setValueAs: (value) =>
+                  value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
               })}
               error={errors.fileSize?.message}
             />
@@ -189,7 +194,8 @@ const CreateField: React.FC<any> = ({
               placeholder="Max Length"
               label="Max Length"
               {...register('maxLength', {
-                setValueAs: (value) => parseInt(value, 10) || 0,
+                setValueAs: (value) =>
+                  value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
               })}
               error={errors.maxLength?.message}
             />
@@ -199,7 +205,10 @@ const CreateField: React.FC<any> = ({
           name="customErrorMessage"
           placeholder="Custom Error Message"
           label="Custom Error Message"
-          {...register('customErrorMessage')}
+          {...register('customErrorMessage', {
+            setValueAs: (value) =>
+              typeof value === 'string' ? value.trimStart() : value,
+          })}
           error={errors.customErrorMessage?.message}
         />
 
