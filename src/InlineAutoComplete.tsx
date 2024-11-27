@@ -217,7 +217,7 @@ const InlineAutoComplete = forwardRef<
 
     const generateClassName = useCallback(() => {
       return `qbs-textfield-default ${className} ${
-        errors && errors?.message ? 'textfield-error' : 'textfield'
+        errors && errors?.message ? 'qbs-textfield-error' : 'textfield'
       }`;
     }, [errors, name]);
     const handleRemoveSelectedItem = (index: number) => {

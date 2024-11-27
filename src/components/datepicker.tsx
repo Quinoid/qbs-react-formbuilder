@@ -39,7 +39,7 @@ const CustomDatePicker: React.FC<DatePickerProps> = ({
         }`}
         value={value}
       />
-      {error && <span className="textfield-error">{error}</span>}
+      {error && <span className="qbs-textfield-error">{error}</span>}
     </div>
   );
 };

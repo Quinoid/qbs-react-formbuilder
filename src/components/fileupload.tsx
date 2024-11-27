@@ -9,6 +9,12 @@ type FileUploadProps = {
   value?: any;
   name?: string;
 };
+const fileTypes = [
+  { value: 'image/jpeg', label: 'JPEG Image' },
+  { value: 'image/png', label: 'PNG Image' },
+  { value: 'application/pdf', label: 'PDF Document' },
+  { value: 'application/msword', label: 'Word Document' },
+];
 
 const FileUpload: React.FC<FileUploadProps> = ({
   allowedFileTypes = [],
@@ -27,6 +33,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
     if (selectedFile) {
       // Validate file type
       if (!allowedFileTypes.includes(selectedFile.type)) {
+        const values = allowedFileTypes?.map((allowed) =>
+          fileTypes.map((type) => (type.value === allowed ? type.label : null))
+        );
+        console.log(values);
         setError(
           `File type not allowed. Allowed types: ${allowedFileTypes.join(', ')}`
         );
@@ -95,7 +105,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           </div>
         )
       )}
-      {error && <span className="textfield-error">{error}</span>}
+      {error && <span className="qbs-textfield-error">{error}</span>}
     </div>
   );
 };

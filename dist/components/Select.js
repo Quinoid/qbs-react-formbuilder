@@ -34,7 +34,7 @@ const SelectField = (0, react_1.forwardRef)(({ label, options, value, onChange, 
         react_1.default.createElement("select", { className: `textfield-input ${error ? 'textfield-input-error' : ''}`, value: value, onChange: onChange, name: name, multiple: multiple, disabled: disabled, ref: ref },
             react_1.default.createElement("option", { value: "", disabled: true }, "Select an option"),
             options.map((option) => (react_1.default.createElement("option", { key: option.value, value: option.value }, option.label)))),
-        error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
+        error && react_1.default.createElement("span", { className: "qbs-textfield-error" }, error)));
 });
 exports.default = SelectField;
 //# sourceMappingURL=Select.js.map

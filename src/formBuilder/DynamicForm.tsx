@@ -4,12 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import Button from '../components/Button';
-import {
-  CloseIcon,
-  PlusIcon,
-  Question,
-  SectionIcon,
-} from '../components/Icons';
+import { CloseIcon, EmptyIcon } from '../components/Icons';
 import { FieldType } from '../types';
 import Tooltip from '../utilities/tootltip';
 import { generateDynamicSchema } from './dynamicSchema';
@@ -25,6 +20,8 @@ type Props = {
     isRepeatable: boolean;
     isDuplicate?: boolean;
   }[];
+  repeatLabel?: string;
+  isLoading?: boolean;
   formTitle?: string;
   formValues?: any;
   updateFormContent?: (
@@ -40,6 +37,8 @@ const DynamicForm: React.FC<Props> = ({
   formValues,
   formTitle,
   updateFormSection,
+  isLoading,
+  repeatLabel,
 }) => {
   const [edit, setEdit] = useState(false);
   const [sections, setSections] = useState(formContent || []);
@@ -61,6 +60,7 @@ const DynamicForm: React.FC<Props> = ({
   type FormSchema = z.infer<typeof schema>;
   const methods = useForm<FormSchema>({
     resolver: zodResolver(schema),
+    mode: 'onChange',
     defaultValues: getInitialData(),
   });
 
@@ -105,13 +105,12 @@ const DynamicForm: React.FC<Props> = ({
         isDuplicate: true,
         parentId: prevSections[sectionIndex].id,
         id: `${Date.now()}`, // Creating a unique section ID
-        fields: prevSections[sectionIndex].fields.map((field) => ({
+        fields: prevSections[sectionIndex].fields.map((field, index) => ({
           ...field,
-          id: `${Date.now()}`, // Creating a unique ID for each field
+          id: `${Date.now() + index}`, // Creating a unique ID for each field
         })),
       };
 
-      // Insert the new section right after the original section
       const updatedSections = [
         ...prevSections.slice(0, sectionIndex + 1),
         newSection,
@@ -142,8 +141,14 @@ const DynamicForm: React.FC<Props> = ({
 
   const { errors } = methods.formState;
 
+  console.log(sections);
+
   return (
-    <div className="preview-container">
+    <div
+      className={
+        sections?.length > 0 ? 'preview-container' : 'preview-container-empty'
+      }
+    >
       <div className="section-header">
         <span className="section-header-title">
           {formTitle ?? 'Data Collection Form'}
@@ -155,68 +160,92 @@ const DynamicForm: React.FC<Props> = ({
               <Button label="Cancel" type="secondary" onClick={handleReset} />
             </>
           ) : (
-            <Button label="Edit" onClick={() => setEdit(true)} />
+            sections.length > 0 && (
+              <Button label="Edit" onClick={() => setEdit(true)} />
+            )
           )}
         </div>
       </div>
-      <FormProvider {...methods}>
-        {sections.map((section: any, index: number) => (
-          <div key={section.id} className="preview-section">
-            <div className="preview-section-head-container ">
-              <div className="preview-section-title-container">
-                <SectionIcon className="section-item-icon" />
-                <div className="preview-section-item-title">
-                  {section.title}
+      {sections.length > 0 ? (
+        <FormProvider {...methods}>
+          {sections.map((section: any, index: number) => (
+            <div key={section.id} className="preview-section">
+              <div className="preview-section-head-container ">
+                <div className="preview-section-title-container">
+                  {/* <SectionIcon className="section-item-icon" /> */}
+                  <div className="preview-section-item-title">
+                    {section.title}
+                  </div>
+                </div>
+                <div style={{ position: 'relative' }}>
+                  {section.isRepeatable && edit && (
+                    <Tooltip title="Duplicate Section">
+                      <Button
+                        className="repeat-section-btn"
+                        label={repeatLabel ?? 'Repeat Section'}
+                        onClick={() => handleConfirmDuplicate(index)}
+                      ></Button>
+                    </Tooltip>
+                  )}
+                  {section.isDuplicate && edit && (
+                    <Tooltip title="Remove Section">
+                      <span
+                        style={{ color: '#e65f5f' }}
+                        onClick={() => handleConfirmRemove(section.id)}
+                      >
+                        <CloseIcon />
+                      </span>
+                    </Tooltip>
+                  )}
                 </div>
               </div>
-              <div style={{ position: 'relative' }}>
-                {section.isRepeatable && edit && (
-                  <Tooltip title="Duplicate Section">
-                    <span
-                      className="text-primary"
-                      onClick={() => handleConfirmDuplicate(index)}
+              {section.fields.map((field: any) => (
+                <div key={field.id}>
+                  <div className="preview-question-title-container">
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      {/* <Question className="section-item-icon" /> */}
+                      <div className="section-field-item-title">
+                        {field.fieldTitle}
+                      </div>
+                    </div>
+                    <div
+                      className="preview-section-field"
+                      style={{ maxWidth: 350 }}
                     >
-                      <PlusIcon />
-                    </span>
-                  </Tooltip>
-                )}
-                {section.isDuplicate && edit && (
-                  <Tooltip title="Remove Section">
-                    <span
-                      style={{ color: '#e65f5f' }}
-                      onClick={() => handleConfirmRemove(section.id)}
-                    >
-                      <CloseIcon />
-                    </span>
-                  </Tooltip>
-                )}
-              </div>
-            </div>
-            {section.fields.map((field: any) => (
-              <div key={field.id}>
-                <div className="preview-question-title-container">
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <Question className="section-item-icon" />
-                    <div className="section-field-item-title">
-                      {field.fieldTitle}
+                      <SwitchComponents
+                        field={field}
+                        errors={errors[field.id]?.message}
+                        editable={edit}
+                      />
                     </div>
                   </div>
-                  <div
-                    className="preview-section-fields"
-                    style={{ maxWidth: 350 }}
-                  >
-                    <SwitchComponents
-                      field={field}
-                      errors={errors[field.id]?.message}
-                      editable={edit}
-                    />
-                  </div>
                 </div>
+              ))}
+            </div>
+          ))}
+        </FormProvider>
+      ) : (
+        !isLoading && (
+          <div className="flexbox-center">
+            <div
+              style={{
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                alignItems: 'center',
+              }}
+            >
+              <div className="flex flex-col items-center justify-center py-10">
+                <EmptyIcon />
+                <p className="text-sm font-bold text-primaryText dark:text-white mt-5">
+                  No data collection form available
+                </p>
               </div>
-            ))}
+            </div>
           </div>
-        ))}
-      </FormProvider>
+        )
+      )}
       <WarningPopup
         isOpen={isOpen}
         setIsOpen={setIsOpen}

@@ -32,7 +32,7 @@ const TextField = (0, react_1.forwardRef)(({ label, placeholder, value, onChange
             " ",
             `${required ? '*' : ''}`)),
         react_1.default.createElement("input", { type: type, className: `textfield-input ${error ? 'textfield-input-error' : ''}`, placeholder: placeholder, value: value, name: name, onChange: onChange, disabled: disabled, ref: ref }),
-        error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
+        error && react_1.default.createElement("span", { className: "qbs-textfield-error" }, error)));
 });
 exports.default = TextField;
 //# sourceMappingURL=Textfield.js.map

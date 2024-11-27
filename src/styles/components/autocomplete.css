@@ -55,7 +55,7 @@ body * {
   color: var(--input-disabled);
 }
 
-.textfield-error,
+.qbs-textfield-error,
 .textfield-big-error {
   outline: none;
   color: var(--error-light) !important;
@@ -63,7 +63,7 @@ body * {
   /* background-color: var(--error-extra-light) !important ; */
 }
 
-.textfield-error::placeholder,
+.qbs-textfield-error::placeholder,
 .textfield-big-error::placeholder {
   color: var(--error-light);
 }

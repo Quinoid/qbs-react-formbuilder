@@ -33,9 +33,9 @@ const zod_2 = require("zod");
 const AutoComplete_1 = __importDefault(require("../AutoComplete"));
 const CheckBox_1 = __importDefault(require("../components/CheckBox"));
 const DialogPopup_1 = __importDefault(require("../components/DialogPopup"));
+const expandableTextArea_1 = __importDefault(require("../components/expandableTextArea"));
 const Select_1 = __importDefault(require("../components/Select"));
 const Textfield_1 = __importDefault(require("../components/Textfield"));
-const expandableTextArea_1 = __importDefault(require("../components/expandableTextArea"));
 // Zod Schema for form validation
 const createFieldSchema = zod_2.z
     .object({
@@ -134,7 +134,11 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
                 } }),
             fieldType === 'file' && (react_1.default.createElement(react_1.default.Fragment, null,
                 react_1.default.createElement(Textfield_1.default, Object.assign({ name: "fileSize", placeholder: "File Size", required: true, type: "number", label: "File Size" }, register('fileSize', {
-                    setValueAs: (value) => value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
+                    setValueAs: (value) => typeof value === 'string' && value.trim() !== ''
+                        ? parseInt(value.trimStart(), 10)
+                        : value
+                            ? parseInt(value, 10)
+                            : undefined,
                 }), { error: (_b = errors.fileSize) === null || _b === void 0 ? void 0 : _b.message })),
                 react_1.default.createElement("div", { className: "textfield-container" },
                     react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: "fileTypes", render: ({ field: { onChange, value } }) => {
@@ -142,8 +146,12 @@ const CreateField = ({ openField, setOpenField, onSubmitField, options, edit, da
                             return (react_1.default.createElement(AutoComplete_1.default, { onChange: handleMultiChange, label: "Select multiple options", data: allowedFileTypes, desc: "label", descId: "value", name: "fileTypes", required: true, isMultiple: true, errors: errors.fileTypes, selectedItems: (_a = watch().fileTypes) !== null && _a !== void 0 ? _a : [] }));
                         } })))),
             fieldType === 'text' ||
-                (fieldType === 'number' && (react_1.default.createElement(Textfield_1.default, Object.assign({ name: "maxLength", placeholder: "Max Length", label: "Max Length" }, register('maxLength', {
-                    setValueAs: (value) => value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
+                (fieldType === 'number' && (react_1.default.createElement(Textfield_1.default, Object.assign({ name: "maxLength", placeholder: fieldType === 'number' ? 'Max Value' : 'Max Length', label: fieldType === 'number' ? 'Max Value' : 'Max Length' }, register('maxLength', {
+                    setValueAs: (value) => typeof value === 'string' && value.trim() !== ''
+                        ? parseInt(value.trimStart(), 10)
+                        : value
+                            ? parseInt(value, 10)
+                            : undefined,
                 }), { error: (_c = errors.maxLength) === null || _c === void 0 ? void 0 : _c.message })))),
             react_1.default.createElement(Textfield_1.default, Object.assign({ name: "customErrorMessage", placeholder: "Custom Error Message", label: "Custom Error Message" }, register('customErrorMessage', {
                 setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,

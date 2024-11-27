@@ -9,6 +9,8 @@ type Props = {
         isRepeatable: boolean;
         isDuplicate?: boolean;
     }[];
+    repeatLabel?: string;
+    isLoading?: boolean;
     formTitle?: string;
     formValues?: any;
     updateFormContent?: (data: any, sections: any, msg?: string) => Promise<boolean>;

@@ -5,6 +5,14 @@
   padding: 10px;
   background-color: #ececec;
 }
+.preview-container-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
 .preview-section {
   display: flex;
   flex-direction: column;
@@ -15,8 +23,8 @@
   border-radius: 6px;
 }
 .preview-section-item-title {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 600;
 }
 .preview-question-title-container {
   display: flex;
@@ -33,4 +41,7 @@
   align-items: center;
   gap: 10px;
   margin: 10px 0px;
+}
+.section-field-item-title {
+  font-size: 14px;
 }

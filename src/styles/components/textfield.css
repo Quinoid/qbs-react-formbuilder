@@ -36,9 +36,9 @@
 .date-picker-input-error {
   border-color: #e74c3c !important; /* Error border color */
 }
-.textfield-error {
+.qbs-textfield-error {
   color: #e74c3c;
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 4px;
 }
 

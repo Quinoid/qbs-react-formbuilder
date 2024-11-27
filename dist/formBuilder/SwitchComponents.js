@@ -54,7 +54,9 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
             return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id, {
                 setValueAs: (value) => typeof value === 'string' && value.trim() !== ''
                     ? parseInt(value.trimStart(), 10)
-                    : undefined,
+                    : value
+                        ? parseInt(value, 10)
+                        : undefined,
             }), { error: errors })));
         case 'textArea':
             return (react_1.default.createElement(react_hook_form_1.Controller, { control: control, name: field.id, render: ({ field: { onChange, value } }) => (react_1.default.createElement(expandableTextArea_1.default, Object.assign({ onDataChange: handleTextareaChange, ref: textareaRef, label: "", value: value }, register(field.id), { error: errors, disabled: !editable, placeholder: "Enter your description here...", maxRows: 3 }))) }));

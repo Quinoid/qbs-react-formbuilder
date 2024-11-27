@@ -16,7 +16,7 @@ const CustomDatePicker = ({ label, selectedDate, onChange, required = false, nam
             " ",
             required && react_1.default.createElement("span", null, "*")),
         react_1.default.createElement(react_datepicker_1.default, { onChange: onChange, name: name, disabled: disabled, dateFormat: "dd/MM/yyyy", placeholderText: "Select a date", className: `date-picker-input ${error ? 'date-picker-input-error' : ''}`, value: value }),
-        error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
+        error && react_1.default.createElement("span", { className: "qbs-textfield-error" }, error)));
 };
 exports.default = CustomDatePicker;
 //# sourceMappingURL=datepicker.js.map

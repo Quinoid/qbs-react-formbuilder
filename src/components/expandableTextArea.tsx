@@ -92,7 +92,7 @@ const ExpandableTextarea = forwardRef<
           placeholder={placeholder}
           {...rest} // Spread any other props
         />
-        {error && <span className="textfield-error">{error}</span>}
+        {error && <span className="qbs-textfield-error">{error}</span>}
       </div>
     );
   }

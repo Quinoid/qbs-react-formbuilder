@@ -24,6 +24,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const fileTypes = [
+    { value: 'image/jpeg', label: 'JPEG Image' },
+    { value: 'image/png', label: 'PNG Image' },
+    { value: 'application/pdf', label: 'PDF Document' },
+    { value: 'application/msword', label: 'Word Document' },
+];
 const FileUpload = ({ allowedFileTypes = [], maxSize = 3, // Default max file size is 3MB
 onFileChange, errors, disabled, value, name, }) => {
     const [file, setFile] = (0, react_1.useState)(null);
@@ -35,6 +41,8 @@ onFileChange, errors, disabled, value, name, }) => {
         if (selectedFile) {
             // Validate file type
             if (!allowedFileTypes.includes(selectedFile.type)) {
+                const values = allowedFileTypes === null || allowedFileTypes === void 0 ? void 0 : allowedFileTypes.map((allowed) => fileTypes.map((type) => (type.value === allowed ? type.label : null)));
+                console.log(values);
                 setError(`File type not allowed. Allowed types: ${allowedFileTypes.join(', ')}`);
                 return;
             }
@@ -71,7 +79,7 @@ onFileChange, errors, disabled, value, name, }) => {
             react_1.default.createElement("button", { onClick: handleRemoveFile, className: "remove-file-button" }, "Remove"))) : (value &&
             value !== 'null' && (react_1.default.createElement("div", { className: "uploaded-file-info" },
             react_1.default.createElement("a", { className: "qbs-uploaded-file", href: value.link }, value.name)))),
-        error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
+        error && react_1.default.createElement("span", { className: "qbs-textfield-error" }, error)));
 };
 exports.default = FileUpload;
 //# sourceMappingURL=fileupload.js.map

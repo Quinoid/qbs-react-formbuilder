@@ -53,8 +53,8 @@ const ThreeDotMenuDropdown = ({ options, handleMenuAction }) => {
             const dropdownRect = menuRef.current.getBoundingClientRect();
             const spaceBelow = window.innerHeight - buttonRect.bottom;
             const spaceAbove = buttonRect.top;
-            if (spaceBelow < dropdownRect.height &&
-                spaceAbove > dropdownRect.height) {
+            console.log(spaceBelow, dropdownRect.height, spaceAbove, dropdownRect.height);
+            if (spaceBelow > spaceAbove) {
                 setPosition('top');
             }
             else {
@@ -66,7 +66,7 @@ const ThreeDotMenuDropdown = ({ options, handleMenuAction }) => {
         react_1.default.createElement("button", { className: "three-dot-button", onClick: toggleDropdown, style: buttonStyle, ref: buttonRef },
             react_1.default.createElement(Icons_1.ThreeDot, null)),
         isOpen && (react_1.default.createElement("div", { className: "dropdown-menus", style: Object.assign(Object.assign({}, dropdownStyle), { [position]: '100%' }) },
-            react_1.default.createElement("ul", { style: menuStyle }, options.map((option, index) => (react_1.default.createElement("li", { className: "menu-item", onClick: () => {
+            react_1.default.createElement("ul", { style: menuStyle }, options.map((option, index) => (react_1.default.createElement("li", { key: index, className: "menu-item", onClick: () => {
                     handleMenuAction(option, index), setIsOpen(false);
                 } },
                 react_1.default.createElement("span", null, option.icon),
@@ -87,6 +87,7 @@ const dropdownStyle = {
     borderRadius: '4px',
     zIndex: 10,
     minWidth: '200px',
+    right: '16px',
 };
 const menuStyle = {
     listStyleType: 'none',

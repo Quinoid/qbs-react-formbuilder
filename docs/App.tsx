@@ -1,6 +1,10 @@
-import React,{ useState } from 'react';
-import '../src/styles/global.css';
+import React, { useState } from 'react';
+
+import DynamicForm from '../src/formBuilder/DynamicForm';
 import FormBuilder from '../src/formBuilder/formbuilder';
+import { formSections } from '../src/static';
+
+import '../src/styles/global.css';
 
 export default function App() {
   const [dropData, setDropData] = useState([]);
@@ -9,8 +13,11 @@ export default function App() {
 
   return (
     <div>
-      <FormBuilder formContent={dropData} updateFormContent={() => {}} />
-      {/* <DynamicForm  formContent={formSections}/> */}
+      <FormBuilder formContent={formSections} updateFormContent={() => {}} />
+      <DynamicForm
+        formContent={formSections}
+        formValues={{ 1730275659290: 20, 1730275681654: 'newww' }}
+      />
     </div>
   );
 }

@@ -46,7 +46,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           disabled={disabled}
           ref={ref}
         />
-        {error && <span className="textfield-error">{error}</span>}
+        {error && <span className="qbs-textfield-error">{error}</span>}
       </div>
     );
   }

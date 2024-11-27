@@ -182,7 +182,7 @@ const InlineAutoComplete = (0, react_1.forwardRef)(({ label, onChange, getData =
         }
     };
     const generateClassName = (0, react_1.useCallback)(() => {
-        return `qbs-textfield-default ${className} ${errors && (errors === null || errors === void 0 ? void 0 : errors.message) ? 'textfield-error' : 'textfield'}`;
+        return `qbs-textfield-default ${className} ${errors && (errors === null || errors === void 0 ? void 0 : errors.message) ? 'qbs-textfield-error' : 'textfield'}`;
     }, [errors, name]);
     const handleRemoveSelectedItem = (index) => {
         setSelectedItems((prev) => {

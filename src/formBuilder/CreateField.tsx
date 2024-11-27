@@ -6,9 +6,10 @@ import { z } from 'zod';
 import AutoComplete from '../AutoComplete';
 import CheckboxField from '../components/CheckBox';
 import Popup from '../components/DialogPopup';
+import ExpandableTextarea from '../components/expandableTextArea';
 import SelectField from '../components/Select';
 import TextField from '../components/Textfield';
-import ExpandableTextarea from '../components/expandableTextArea';
+
 // Zod Schema for form validation
 const createFieldSchema = z
   .object({
@@ -160,7 +161,11 @@ const CreateField: React.FC<any> = ({
               label="File Size"
               {...register('fileSize', {
                 setValueAs: (value) =>
-                  value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
+                  typeof value === 'string' && value.trim() !== ''
+                    ? parseInt(value.trimStart(), 10)
+                    : value
+                    ? parseInt(value, 10)
+                    : undefined,
               })}
               error={errors.fileSize?.message}
             />
@@ -191,11 +196,15 @@ const CreateField: React.FC<any> = ({
           (fieldType === 'number' && (
             <TextField
               name="maxLength"
-              placeholder="Max Length"
-              label="Max Length"
+              placeholder={fieldType === 'number' ? 'Max Value' : 'Max Length'}
+              label={fieldType === 'number' ? 'Max Value' : 'Max Length'}
               {...register('maxLength', {
                 setValueAs: (value) =>
-                  value === '' ? undefined : parseInt(value.trimStart(), 10), // Parse as integer and trim leading spaces
+                  typeof value === 'string' && value.trim() !== ''
+                    ? parseInt(value.trimStart(), 10)
+                    : value
+                    ? parseInt(value, 10)
+                    : undefined,
               })}
               error={errors.maxLength?.message}
             />

@@ -52,6 +52,8 @@ const SwitchComponents: React.FC<Props> = React.memo(
               setValueAs: (value) =>
                 typeof value === 'string' && value.trim() !== ''
                   ? parseInt(value.trimStart(), 10)
+                  : value
+                  ? parseInt(value, 10)
                   : undefined,
             })}
             error={errors}

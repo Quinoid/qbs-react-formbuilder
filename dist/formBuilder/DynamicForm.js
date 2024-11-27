@@ -44,7 +44,7 @@ const tootltip_1 = __importDefault(require("../utilities/tootltip"));
 const dynamicSchema_1 = require("./dynamicSchema");
 const SwitchComponents_1 = __importDefault(require("./SwitchComponents"));
 const WaringPopup_1 = __importDefault(require("./WaringPopup"));
-const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, updateFormSection, }) => {
+const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, updateFormSection, isLoading, repeatLabel, }) => {
     const [edit, setEdit] = (0, react_1.useState)(false);
     const [sections, setSections] = (0, react_1.useState)(formContent || []);
     const [isOpen, setIsOpen] = (0, react_1.useState)(false);
@@ -64,6 +64,7 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
     }, [formContent]);
     const methods = (0, react_hook_form_1.useForm)({
         resolver: (0, zod_1.zodResolver)(schema),
+        mode: 'onChange',
         defaultValues: getInitialData(),
     });
     (0, react_1.useEffect)(() => {
@@ -96,8 +97,7 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
     };
     const handleAddSection = (sectionIndex) => {
         setSections((prevSections) => {
-            const newSection = Object.assign(Object.assign({}, prevSections[sectionIndex]), { isRepeatable: false, isDuplicate: true, parentId: prevSections[sectionIndex].id, id: `${Date.now()}`, fields: prevSections[sectionIndex].fields.map((field) => (Object.assign(Object.assign({}, field), { id: `${Date.now()}` }))) });
-            // Insert the new section right after the original section
+            const newSection = Object.assign(Object.assign({}, prevSections[sectionIndex]), { isRepeatable: false, isDuplicate: true, parentId: prevSections[sectionIndex].id, id: `${Date.now()}`, fields: prevSections[sectionIndex].fields.map((field, index) => (Object.assign(Object.assign({}, field), { id: `${Date.now() + index}` }))) });
             const updatedSections = [
                 ...prevSections.slice(0, sectionIndex + 1),
                 newSection,
@@ -122,21 +122,20 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
         setCurrentSectionId(sectionId);
     };
     const { errors } = methods.formState;
-    return (react_1.default.createElement("div", { className: "preview-container" },
+    console.log(sections);
+    return (react_1.default.createElement("div", { className: (sections === null || sections === void 0 ? void 0 : sections.length) > 0 ? 'preview-container' : 'preview-container-empty' },
         react_1.default.createElement("div", { className: "section-header" },
             react_1.default.createElement("span", { className: "section-header-title" }, formTitle !== null && formTitle !== void 0 ? formTitle : 'Data Collection Form'),
             react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } }, edit ? (react_1.default.createElement(react_1.default.Fragment, null,
                 react_1.default.createElement(Button_1.default, { label: "Save", onClick: methods.handleSubmit(updateForm) }),
-                react_1.default.createElement(Button_1.default, { label: "Cancel", type: "secondary", onClick: handleReset }))) : (react_1.default.createElement(Button_1.default, { label: "Edit", onClick: () => setEdit(true) })))),
-        react_1.default.createElement(react_hook_form_1.FormProvider, Object.assign({}, methods), sections.map((section, index) => (react_1.default.createElement("div", { key: section.id, className: "preview-section" },
+                react_1.default.createElement(Button_1.default, { label: "Cancel", type: "secondary", onClick: handleReset }))) : (sections.length > 0 && (react_1.default.createElement(Button_1.default, { label: "Edit", onClick: () => setEdit(true) }))))),
+        sections.length > 0 ? (react_1.default.createElement(react_hook_form_1.FormProvider, Object.assign({}, methods), sections.map((section, index) => (react_1.default.createElement("div", { key: section.id, className: "preview-section" },
             react_1.default.createElement("div", { className: "preview-section-head-container " },
                 react_1.default.createElement("div", { className: "preview-section-title-container" },
-                    react_1.default.createElement(Icons_1.SectionIcon, { className: "section-item-icon" }),
                     react_1.default.createElement("div", { className: "preview-section-item-title" }, section.title)),
                 react_1.default.createElement("div", { style: { position: 'relative' } },
                     section.isRepeatable && edit && (react_1.default.createElement(tootltip_1.default, { title: "Duplicate Section" },
-                        react_1.default.createElement("span", { className: "text-primary", onClick: () => handleConfirmDuplicate(index) },
-                            react_1.default.createElement(Icons_1.PlusIcon, null)))),
+                        react_1.default.createElement(Button_1.default, { className: "repeat-section-btn", label: repeatLabel !== null && repeatLabel !== void 0 ? repeatLabel : 'Repeat Section', onClick: () => handleConfirmDuplicate(index) }))),
                     section.isDuplicate && edit && (react_1.default.createElement(tootltip_1.default, { title: "Remove Section" },
                         react_1.default.createElement("span", { style: { color: '#e65f5f' }, onClick: () => handleConfirmRemove(section.id) },
                             react_1.default.createElement(Icons_1.CloseIcon, null)))))),
@@ -145,11 +144,20 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
                 return (react_1.default.createElement("div", { key: field.id },
                     react_1.default.createElement("div", { className: "preview-question-title-container" },
                         react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } },
-                            react_1.default.createElement(Icons_1.Question, { className: "section-item-icon" }),
                             react_1.default.createElement("div", { className: "section-field-item-title" }, field.fieldTitle)),
-                        react_1.default.createElement("div", { className: "preview-section-fields", style: { maxWidth: 350 } },
+                        react_1.default.createElement("div", { className: "preview-section-field", style: { maxWidth: 350 } },
                             react_1.default.createElement(SwitchComponents_1.default, { field: field, errors: (_a = errors[field.id]) === null || _a === void 0 ? void 0 : _a.message, editable: edit })))));
-            }))))),
+            })))))) : (!isLoading && (react_1.default.createElement("div", { className: "flexbox-center" },
+            react_1.default.createElement("div", { style: {
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    alignItems: 'center',
+                } },
+                react_1.default.createElement("div", { className: "flex flex-col items-center justify-center py-10" },
+                    react_1.default.createElement(Icons_1.EmptyIcon, null),
+                    react_1.default.createElement("p", { className: "text-sm font-bold text-primaryText dark:text-white mt-5" }, "No data collection form available")))))),
         react_1.default.createElement(WaringPopup_1.default, { isOpen: isOpen, setIsOpen: setIsOpen, content: "Are you sure you want to duplicate this section?", handleSubmit: () => handleAddSection(currentIndex), title: "Duplicate Section" }),
         react_1.default.createElement(WaringPopup_1.default, { isOpen: isRemoveOpen, setIsOpen: setIsRemoveOpen, content: "Are you sure you want to remove this section?", handleSubmit: () => handleRemoveSection(currentSectionId), title: "Remove Section" })));
 };

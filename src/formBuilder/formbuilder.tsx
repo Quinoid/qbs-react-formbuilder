@@ -5,10 +5,10 @@ import {
   DeleteIcon,
   DuplicateIcon,
   EditIcon,
+  EmptyIcon,
   PlusIcon,
   Question,
   SectionIcon,
-  EmptyIcon,
 } from '../components/Icons';
 import ThreeDotMenuDropdown from '../components/ThreeDotMenu';
 import { FieldType } from '../types';
@@ -16,6 +16,7 @@ import CreateField from './CreateField';
 import CreateSection from './CreateSection';
 import FormPreview from './FormPreview';
 import WarningPopup from './WaringPopup';
+
 const options = [
   { value: 'number', label: 'Number' },
   { value: 'text', label: 'Text' },
@@ -72,7 +73,7 @@ const FormBuilder: React.FC<Props> = ({
   const [currentFieldId, setcurrentFieldId] = useState<any>(null);
   const [currentIndex, setCurrentIndex] = useState<any>(null);
   useEffect(() => {
-    setSections(formContent);
+    setSections(formContent ?? []);
   }, [formContent]);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const FormBuilder: React.FC<Props> = ({
     const index = newSections.findIndex((sect: any) => sect.id === section.id);
     newSections.splice(index, 0, draggedSection);
     setSections(newSections);
-    setMessage('Section Position Updated');
+    setMessage('Section position updated successfully');
     setDraggedSection(null);
     setUpdateKey(updateKey + 1);
   };
@@ -124,7 +125,7 @@ const FormBuilder: React.FC<Props> = ({
       return section;
     });
     setSections(newSections);
-    setMessage('Section Field Position Updated');
+    setMessage(' Field position updated successfully');
 
     setDraggedField(null);
     setUpdateKey(updateKey + 1);
@@ -136,14 +137,14 @@ const FormBuilder: React.FC<Props> = ({
       );
       setSections(result);
       setEditSection(false);
-      setMessage('Section Updated Successfully');
+      setMessage('Section updated successfully');
     } else {
       setSections([
         ...sections,
         { ...data, id: Date.now().toString(), fields: [] },
       ]);
       setOpenSection(false);
-      setMessage('Section Created Successfully');
+      setMessage('Section created successfully');
     }
 
     setUpdateKey(updateKey + 1);
@@ -161,7 +162,7 @@ const FormBuilder: React.FC<Props> = ({
             }
           : sect
       );
-      setMessage('Section Field Updated Successfully');
+      setMessage(' Field updated successfully');
       setSections(result);
       setEditField(false);
     } else {
@@ -184,7 +185,7 @@ const FormBuilder: React.FC<Props> = ({
       );
       setSections(result);
       setOpenField(false);
-      setMessage('Section Field Created Successfully');
+      setMessage(' Field created successfully');
     }
     setUpdateKey(updateKey + 1);
   };
@@ -196,7 +197,7 @@ const FormBuilder: React.FC<Props> = ({
   };
   const handleDelete = (sectionId: any) => {
     setSections(sections.filter((section: any) => section.id !== sectionId));
-    setMessage('Section Deleted Successfully');
+    setMessage('Section deleted successfully');
     setUpdateKey(updateKey + 1);
   };
   const handleDeleteField = (sectionId: any, fieldId: any) => {
@@ -211,7 +212,7 @@ const FormBuilder: React.FC<Props> = ({
         return section;
       })
     );
-    setMessage('Section Field Deleted Successfully');
+    setMessage(' Field deleted successfully');
     setUpdateKey(updateKey + 1);
   };
   const handleEditSection = (sectionId: any) => {
@@ -238,6 +239,8 @@ const FormBuilder: React.FC<Props> = ({
     };
     result.push(newSection); // Add the new section with updated fields
     setSections(result); // Update state with the new sections array
+    setMessage('Section duplicated successfully');
+
     setUpdateKey(updateKey + 1); // Trigger an update
   };
 

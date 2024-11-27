@@ -163,7 +163,7 @@ const AutoComplete = (0, react_1.forwardRef)(({ label, onChange, getData = () =>
         }
     };
     const generateClassName = (0, react_1.useCallback)(() => {
-        return `qbs-textfield-default ${className} ${errors && (errors === null || errors === void 0 ? void 0 : errors.message) ? 'textfield-error' : 'textfield'}`;
+        return `qbs-textfield-default ${className} ${errors && (errors === null || errors === void 0 ? void 0 : errors.message) ? 'qbs-textfield-error' : 'textfield'}`;
     }, [errors, name]);
     const handleRemoveSelectedItem = (index) => {
         setSelectedItems((prev) => {
@@ -288,7 +288,7 @@ const AutoComplete = (0, react_1.forwardRef)(({ label, onChange, getData = () =>
                         nextBlock !== undefined &&
                         (filteredData === null || filteredData === void 0 ? void 0 : filteredData.length) > 0 && (react_1.default.createElement("div", { className: "loadMoreSection", onClick: () => handleLoadMore() },
                         react_1.default.createElement("p", { style: { margin: 2 } }, "Load More"))))))),
-        errors && (react_1.default.createElement("div", { className: "text-error text-error-label mt-[1px] textfield-error", "data-testid": "autocomplete-error" }, errors.message))));
+        errors && (react_1.default.createElement("div", { className: "text-error text-error-label mt-[1px] qbs-textfield-error", "data-testid": "autocomplete-error" }, errors.message))));
 });
 exports.default = react_1.default.memo(AutoComplete);
 //# sourceMappingURL=AutoComplete.js.map

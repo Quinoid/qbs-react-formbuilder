@@ -16,7 +16,7 @@ const WarningPopup: React.FC<any> = ({
       onClose={() => setIsOpen(false)}
       title={title}
       onSubmit={handleSubmit}
-      actionLabel={'yes'}
+      actionLabel={'Yes'}
       secondaryAction={
         <Button
           label="No"

@@ -1,5 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { ThreeDot } from './Icons';
+
 // ThreeDotMenuDropdown component
 const ThreeDotMenuDropdown: React.FC<any> = ({ options, handleMenuAction }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,11 +34,13 @@ const ThreeDotMenuDropdown: React.FC<any> = ({ options, handleMenuAction }) => {
       const dropdownRect = menuRef.current.getBoundingClientRect();
       const spaceBelow = window.innerHeight - buttonRect.bottom;
       const spaceAbove = buttonRect.top;
-
-      if (
-        spaceBelow < dropdownRect.height &&
-        spaceAbove > dropdownRect.height
-      ) {
+      console.log(
+        spaceBelow,
+        dropdownRect.height,
+        spaceAbove,
+        dropdownRect.height
+      );
+      if (spaceBelow > spaceAbove) {
         setPosition('top');
       } else {
         setPosition('bottom');
@@ -71,6 +75,7 @@ const ThreeDotMenuDropdown: React.FC<any> = ({ options, handleMenuAction }) => {
           <ul style={menuStyle}>
             {options.map((option: any, index: number) => (
               <li
+                key={index}
                 className="menu-item"
                 onClick={() => {
                   handleMenuAction(option, index), setIsOpen(false);
@@ -103,6 +108,7 @@ const dropdownStyle: React.CSSProperties = {
   borderRadius: '4px',
   zIndex: 10,
   minWidth: '200px',
+  right: '16px',
 };
 
 const menuStyle: React.CSSProperties = {

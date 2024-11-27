@@ -54,7 +54,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
             </option>
           ))}
         </select>
-        {error && <span className="textfield-error">{error}</span>}
+        {error && <span className="qbs-textfield-error">{error}</span>}
       </div>
     );
   }

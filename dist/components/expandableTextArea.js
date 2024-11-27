@@ -82,7 +82,7 @@ const ExpandableTextarea = (0, react_1.forwardRef)((_a, ref) => {
                 padding: '8px',
                 boxSizing: 'border-box', // Include padding in width
             }, className: `textarea-input ${error ? 'textfield-input-error' : ''}`, placeholder: placeholder }, rest)),
-        error && react_1.default.createElement("span", { className: "textfield-error" }, error)));
+        error && react_1.default.createElement("span", { className: "qbs-textfield-error" }, error)));
 });
 exports.default = ExpandableTextarea;
 //# sourceMappingURL=expandableTextArea.js.map

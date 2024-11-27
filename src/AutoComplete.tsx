@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 
 import { AutoSuggestionInputProps } from './commontypes';
 import { useSuggestions } from './utilities/autosuggestions';
@@ -186,7 +193,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoSuggestionInputProps>(
 
     const generateClassName = useCallback(() => {
       return `qbs-textfield-default ${className} ${
-        errors && errors?.message ? 'textfield-error' : 'textfield'
+        errors && errors?.message ? 'qbs-textfield-error' : 'textfield'
       }`;
     }, [errors, name]);
     const handleRemoveSelectedItem = (index: number) => {
@@ -534,7 +541,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoSuggestionInputProps>(
         {/* Displaying Validation Error */}
         {errors && (
           <div
-            className="text-error text-error-label mt-[1px] textfield-error"
+            className="text-error text-error-label mt-[1px] qbs-textfield-error"
             data-testid="autocomplete-error"
           >
             {errors.message}

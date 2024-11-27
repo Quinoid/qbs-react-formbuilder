@@ -73,7 +73,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
     const [currentFieldId, setcurrentFieldId] = (0, react_1.useState)(null);
     const [currentIndex, setCurrentIndex] = (0, react_1.useState)(null);
     (0, react_1.useEffect)(() => {
-        setSections(formContent);
+        setSections(formContent !== null && formContent !== void 0 ? formContent : []);
     }, [formContent]);
     (0, react_1.useEffect)(() => {
         if (updateKey !== 0) {
@@ -91,7 +91,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
         const index = newSections.findIndex((sect) => sect.id === section.id);
         newSections.splice(index, 0, draggedSection);
         setSections(newSections);
-        setMessage('Section Position Updated');
+        setMessage('Section position updated successfully');
         setDraggedSection(null);
         setUpdateKey(updateKey + 1);
     };
@@ -114,7 +114,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
             return section;
         });
         setSections(newSections);
-        setMessage('Section Field Position Updated');
+        setMessage(' Field position updated successfully');
         setDraggedField(null);
         setUpdateKey(updateKey + 1);
     };
@@ -123,7 +123,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
             const result = sections.map((sect) => sect.id === (currentSection === null || currentSection === void 0 ? void 0 : currentSection.id) ? Object.assign(Object.assign({}, sect), data) : sect);
             setSections(result);
             setEditSection(false);
-            setMessage('Section Updated Successfully');
+            setMessage('Section updated successfully');
         }
         else {
             setSections([
@@ -131,7 +131,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
                 Object.assign(Object.assign({}, data), { id: Date.now().toString(), fields: [] }),
             ]);
             setOpenSection(false);
-            setMessage('Section Created Successfully');
+            setMessage('Section created successfully');
         }
         setUpdateKey(updateKey + 1);
     };
@@ -139,7 +139,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
         if (editField) {
             const result = sections.map((sect) => sect.id === (currentSection === null || currentSection === void 0 ? void 0 : currentSection.id)
                 ? Object.assign(Object.assign({}, sect), { fields: sect.fields.map((field) => field.id === (currentField === null || currentField === void 0 ? void 0 : currentField.id) ? Object.assign(Object.assign({}, field), data) : field) }) : sect);
-            setMessage('Section Field Updated Successfully');
+            setMessage(' Field updated successfully');
             setSections(result);
             setEditField(false);
         }
@@ -153,7 +153,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
                     ] }) : sect);
             setSections(result);
             setOpenField(false);
-            setMessage('Section Field Created Successfully');
+            setMessage(' Field created successfully');
         }
         setUpdateKey(updateKey + 1);
     };
@@ -164,7 +164,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
     };
     const handleDelete = (sectionId) => {
         setSections(sections.filter((section) => section.id !== sectionId));
-        setMessage('Section Deleted Successfully');
+        setMessage('Section deleted successfully');
         setUpdateKey(updateKey + 1);
     };
     const handleDeleteField = (sectionId, fieldId) => {
@@ -174,7 +174,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
             }
             return section;
         }));
-        setMessage('Section Field Deleted Successfully');
+        setMessage(' Field deleted successfully');
         setUpdateKey(updateKey + 1);
     };
     const handleEditSection = (sectionId) => {
@@ -194,6 +194,7 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
         const newSection = Object.assign(Object.assign({}, section), { id: `${Date.now().toString()}`, fields: (_a = section === null || section === void 0 ? void 0 : section.fields) === null || _a === void 0 ? void 0 : _a.map((field, index) => (Object.assign(Object.assign({}, field), { id: `dup-${index}-${Date.now().toString()}` }))) });
         result.push(newSection); // Add the new section with updated fields
         setSections(result); // Update state with the new sections array
+        setMessage('Section duplicated successfully');
         setUpdateKey(updateKey + 1); // Trigger an update
     };
     const handleMenuAction = (option, section) => {

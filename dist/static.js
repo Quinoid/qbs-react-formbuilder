@@ -19,7 +19,7 @@ exports.formSections = [
             {
                 id: '1730275659290',
                 fileSize: 0,
-                maxLength: 3,
+                maxLength: 100,
                 required: true,
                 fieldType: 'number',
                 fileTypes: [],
@@ -29,7 +29,7 @@ exports.formSections = [
             {
                 id: '1730275681654',
                 fileSize: 0,
-                maxLength: 0,
+                maxLength: 20,
                 required: false,
                 fieldType: 'text',
                 fileTypes: [],

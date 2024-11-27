@@ -16,18 +16,27 @@ const generateDynamicSchema = (sections) => {
                     fieldSchema = zod_1.z
                         .string()
                         .regex(/^\S.*$/, 'Leading spaces are not allowed');
-                    if (field.maxLength) {
+                    if (field.maxLength && field.maxLength > 0) {
                         fieldSchema = fieldSchema.max(field.maxLength, `Maximum length is ${field.maxLength} characters`);
                     }
                     break;
                 case 'number':
-                    fieldSchema = zod_1.z.number();
+                    fieldSchema = zod_1.z.number({
+                        required_error: field.customErrorMessage && field.customErrorMessage !== ''
+                            ? field.customErrorMessage
+                            : 'This is a mandatory field',
+                    });
+                    if (field.maxLength && field.maxLength > 0) {
+                        fieldSchema = fieldSchema.max(field.maxLength, `Maximum value is ${field.maxLength}`);
+                    }
                     break;
                 case 'date':
                     fieldSchema = zod_1.z
                         .union([zod_1.z.date(), zod_1.z.null(), zod_1.z.string()])
                         .refine((value) => value !== null, {
-                        message: 'Please select a date',
+                        message: field.customErrorMessage && field.customErrorMessage !== ''
+                            ? field.customErrorMessage
+                            : 'Please select a date',
                     });
                     break;
                 case 'file':
@@ -36,11 +45,17 @@ const generateDynamicSchema = (sections) => {
                             zod_1.z
                                 .instanceof(File)
                                 .refine((file) => file.size <= (field.fileSize || Infinity) * 1024 * 1024, {
-                                message: `File size must be less than ${field.fileSize} MB`,
+                                message: field.customErrorMessage &&
+                                    field.customErrorMessage !== ''
+                                    ? field.customErrorMessage
+                                    : `File size must be less than ${field.fileSize} MB`,
                             })
                                 .refine((file) => field.fileTypes &&
                                 field.fileTypes.some((type) => file.type === type.value), {
-                                message: `File type must be one of the following: ${(_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value).join(', ')}`,
+                                message: field.customErrorMessage &&
+                                    field.customErrorMessage !== ''
+                                    ? field.customErrorMessage
+                                    : `File type must be one of the following: ${(_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value).join(', ')}`,
                             }),
                             zod_1.z.string(),
                             zod_1.z.object({
@@ -64,11 +79,15 @@ const generateDynamicSchema = (sections) => {
                     fieldSchema = fieldSchema.refine((file) => file instanceof File ||
                         typeof file === 'string' ||
                         typeof file === 'object', {
-                        message: 'This is a mandatory field',
+                        message: field.customErrorMessage && field.customErrorMessage !== ''
+                            ? field.customErrorMessage
+                            : 'This is a mandatory field',
                     });
                 }
                 else if (fieldSchema instanceof zod_1.z.ZodString) {
-                    fieldSchema = fieldSchema.min(1, `This is a mandatory field`);
+                    fieldSchema = fieldSchema.min(1, field.customErrorMessage && field.customErrorMessage !== ''
+                        ? field.customErrorMessage
+                        : `This is a mandatory field`);
                 }
             }
             else {
