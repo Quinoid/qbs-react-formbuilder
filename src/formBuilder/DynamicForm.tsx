@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import Button from '../components/Button';
-import { CloseIcon, EmptyIcon } from '../components/Icons';
+import { DeleteIcon, EmptyIcon } from '../components/Icons';
 import { FieldType } from '../types';
 import Tooltip from '../utilities/tootltip';
 import { generateDynamicSchema } from './dynamicSchema';
@@ -24,6 +24,7 @@ type Props = {
   isLoading?: boolean;
   formTitle?: string;
   formValues?: any;
+  sectionInfo?: React.ReactNode;
   updateFormContent?: (
     data: any,
     sections: any,
@@ -39,6 +40,7 @@ const DynamicForm: React.FC<Props> = ({
   updateFormSection,
   isLoading,
   repeatLabel,
+  sectionInfo,
 }) => {
   const [edit, setEdit] = useState(false);
   const [sections, setSections] = useState(formContent || []);
@@ -166,6 +168,7 @@ const DynamicForm: React.FC<Props> = ({
           )}
         </div>
       </div>
+      {sectionInfo && <div className=" section-info">{sectionInfo}</div>}
       {sections.length > 0 ? (
         <FormProvider {...methods}>
           {sections.map((section: any, index: number) => (
@@ -191,9 +194,10 @@ const DynamicForm: React.FC<Props> = ({
                     <Tooltip title="Remove Section">
                       <span
                         style={{ color: '#e65f5f' }}
+                        className="remove-section-btn"
                         onClick={() => handleConfirmRemove(section.id)}
                       >
-                        <CloseIcon />
+                        <DeleteIcon />
                       </span>
                     </Tooltip>
                   )}

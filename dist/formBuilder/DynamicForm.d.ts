@@ -13,6 +13,7 @@ type Props = {
     isLoading?: boolean;
     formTitle?: string;
     formValues?: any;
+    sectionInfo?: React.ReactNode;
     updateFormContent?: (data: any, sections: any, msg?: string) => Promise<boolean>;
     updateFormSection?: (data: any, msg?: string) => void;
 };

@@ -44,7 +44,7 @@ const tootltip_1 = __importDefault(require("../utilities/tootltip"));
 const dynamicSchema_1 = require("./dynamicSchema");
 const SwitchComponents_1 = __importDefault(require("./SwitchComponents"));
 const WaringPopup_1 = __importDefault(require("./WaringPopup"));
-const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, updateFormSection, isLoading, repeatLabel, }) => {
+const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, updateFormSection, isLoading, repeatLabel, sectionInfo, }) => {
     const [edit, setEdit] = (0, react_1.useState)(false);
     const [sections, setSections] = (0, react_1.useState)(formContent || []);
     const [isOpen, setIsOpen] = (0, react_1.useState)(false);
@@ -129,6 +129,7 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
             react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } }, edit ? (react_1.default.createElement(react_1.default.Fragment, null,
                 react_1.default.createElement(Button_1.default, { label: "Save", onClick: methods.handleSubmit(updateForm) }),
                 react_1.default.createElement(Button_1.default, { label: "Cancel", type: "secondary", onClick: handleReset }))) : (sections.length > 0 && (react_1.default.createElement(Button_1.default, { label: "Edit", onClick: () => setEdit(true) }))))),
+        sectionInfo && react_1.default.createElement("div", { className: " section-info" }, sectionInfo),
         sections.length > 0 ? (react_1.default.createElement(react_hook_form_1.FormProvider, Object.assign({}, methods), sections.map((section, index) => (react_1.default.createElement("div", { key: section.id, className: "preview-section" },
             react_1.default.createElement("div", { className: "preview-section-head-container " },
                 react_1.default.createElement("div", { className: "preview-section-title-container" },
@@ -137,8 +138,8 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
                     section.isRepeatable && edit && (react_1.default.createElement(tootltip_1.default, { title: "Duplicate Section" },
                         react_1.default.createElement(Button_1.default, { className: "repeat-section-btn", label: repeatLabel !== null && repeatLabel !== void 0 ? repeatLabel : 'Repeat Section', onClick: () => handleConfirmDuplicate(index) }))),
                     section.isDuplicate && edit && (react_1.default.createElement(tootltip_1.default, { title: "Remove Section" },
-                        react_1.default.createElement("span", { style: { color: '#e65f5f' }, onClick: () => handleConfirmRemove(section.id) },
-                            react_1.default.createElement(Icons_1.CloseIcon, null)))))),
+                        react_1.default.createElement("span", { style: { color: '#e65f5f' }, className: "remove-section-btn", onClick: () => handleConfirmRemove(section.id) },
+                            react_1.default.createElement(Icons_1.DeleteIcon, null)))))),
             section.fields.map((field) => {
                 var _a;
                 return (react_1.default.createElement("div", { key: field.id },
