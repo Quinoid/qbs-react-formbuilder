@@ -122,7 +122,26 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
         setCurrentSectionId(sectionId);
     };
     const { errors } = methods.formState;
-    console.log(sections);
+    const renderChildren = (parentId) => {
+        return sections
+            .filter((section) => section.parentId === parentId)
+            .map((section, index) => (react_1.default.createElement("div", { key: section.id },
+            react_1.default.createElement("div", { className: "preview-section-head-container child-section-head-container" },
+                react_1.default.createElement("div", { className: "preview-section-title-container childs-section-title-container" },
+                    react_1.default.createElement("div", { className: "preview-section-item-title child-section-title" }, `${section.title} ${index + 1}`)),
+                react_1.default.createElement("div", { style: { position: 'relative' } }, section.isDuplicate && edit && (react_1.default.createElement(tootltip_1.default, { title: "Remove Section" },
+                    react_1.default.createElement("span", { style: { color: '#e65f5f' }, className: "remove-section-btn", onClick: () => handleConfirmRemove(section.id) },
+                        react_1.default.createElement(Icons_1.DeleteIcon, null)))))),
+            section.fields.map((field) => {
+                var _a;
+                return (react_1.default.createElement("div", { key: field.id },
+                    react_1.default.createElement("div", { className: "preview-question-title-container" },
+                        react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } },
+                            react_1.default.createElement("div", { className: "section-field-item-title" }, field.fieldTitle)),
+                        react_1.default.createElement("div", { className: "preview-section-field", style: { maxWidth: 350 } },
+                            react_1.default.createElement(SwitchComponents_1.default, { field: field, errors: (_a = errors[field.id]) === null || _a === void 0 ? void 0 : _a.message, editable: edit })))));
+            }))));
+    };
     return (react_1.default.createElement("div", { className: (sections === null || sections === void 0 ? void 0 : sections.length) > 0 ? 'preview-container' : 'preview-container-empty' },
         react_1.default.createElement("div", { className: "section-header" },
             react_1.default.createElement("span", { className: "section-header-title" }, formTitle !== null && formTitle !== void 0 ? formTitle : 'Data Collection Form'),
@@ -130,7 +149,7 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
                 react_1.default.createElement(Button_1.default, { label: "Save", onClick: methods.handleSubmit(updateForm) }),
                 react_1.default.createElement(Button_1.default, { label: "Cancel", type: "secondary", onClick: handleReset }))) : (sections.length > 0 && (react_1.default.createElement(Button_1.default, { label: "Edit", onClick: () => setEdit(true) }))))),
         sectionInfo && react_1.default.createElement("div", { className: " section-info" }, sectionInfo),
-        sections.length > 0 ? (react_1.default.createElement(react_hook_form_1.FormProvider, Object.assign({}, methods), sections.map((section, index) => (react_1.default.createElement("div", { key: section.id, className: "preview-section" },
+        sections.length > 0 ? (react_1.default.createElement(react_hook_form_1.FormProvider, Object.assign({}, methods), sections.map((section, index) => !section.parentId && (react_1.default.createElement("div", { key: section.id, className: "preview-section" },
             react_1.default.createElement("div", { className: "preview-section-head-container " },
                 react_1.default.createElement("div", { className: "preview-section-title-container" },
                     react_1.default.createElement("div", { className: "preview-section-item-title" }, section.title)),
@@ -148,7 +167,8 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
                             react_1.default.createElement("div", { className: "section-field-item-title" }, field.fieldTitle)),
                         react_1.default.createElement("div", { className: "preview-section-field", style: { maxWidth: 350 } },
                             react_1.default.createElement(SwitchComponents_1.default, { field: field, errors: (_a = errors[field.id]) === null || _a === void 0 ? void 0 : _a.message, editable: edit })))));
-            })))))) : (!isLoading && (react_1.default.createElement("div", { className: "flexbox-center" },
+            }),
+            renderChildren(section.id)))))) : (!isLoading && (react_1.default.createElement("div", { className: "flexbox-center" },
             react_1.default.createElement("div", { style: {
                     textAlign: 'center',
                     display: 'flex',

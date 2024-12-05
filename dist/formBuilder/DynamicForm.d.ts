@@ -8,6 +8,7 @@ type Props = {
         fields: FieldType[];
         isRepeatable: boolean;
         isDuplicate?: boolean;
+        parentId?: string;
     }[];
     repeatLabel?: string;
     isLoading?: boolean;

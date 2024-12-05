@@ -19,6 +19,7 @@ type Props = {
     fields: FieldType[];
     isRepeatable: boolean;
     isDuplicate?: boolean;
+    parentId?: string;
   }[];
   repeatLabel?: string;
   isLoading?: boolean;
@@ -142,9 +143,57 @@ const DynamicForm: React.FC<Props> = ({
   };
 
   const { errors } = methods.formState;
-
-  console.log(sections);
-
+  const renderChildren = (parentId: string) => {
+    return sections
+      .filter((section) => section.parentId === parentId)
+      .map((section: any, index: number) => (
+        <div key={section.id}>
+          <div className="preview-section-head-container child-section-head-container">
+            <div className="preview-section-title-container childs-section-title-container">
+              {/* <SectionIcon className="section-item-icon" /> */}
+              <div className="preview-section-item-title child-section-title">{`${
+                section.title
+              } ${index + 1}`}</div>
+            </div>
+            <div style={{ position: 'relative' }}>
+              {section.isDuplicate && edit && (
+                <Tooltip title="Remove Section">
+                  <span
+                    style={{ color: '#e65f5f' }}
+                    className="remove-section-btn"
+                    onClick={() => handleConfirmRemove(section.id)}
+                  >
+                    <DeleteIcon />
+                  </span>
+                </Tooltip>
+              )}
+            </div>
+          </div>
+          {section.fields.map((field: any) => (
+            <div key={field.id}>
+              <div className="preview-question-title-container">
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {/* <Question className="section-item-icon" /> */}
+                  <div className="section-field-item-title">
+                    {field.fieldTitle}
+                  </div>
+                </div>
+                <div
+                  className="preview-section-field"
+                  style={{ maxWidth: 350 }}
+                >
+                  <SwitchComponents
+                    field={field}
+                    errors={errors[field.id]?.message}
+                    editable={edit}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ));
+  };
   return (
     <div
       className={
@@ -171,62 +220,67 @@ const DynamicForm: React.FC<Props> = ({
       {sectionInfo && <div className=" section-info">{sectionInfo}</div>}
       {sections.length > 0 ? (
         <FormProvider {...methods}>
-          {sections.map((section: any, index: number) => (
-            <div key={section.id} className="preview-section">
-              <div className="preview-section-head-container ">
-                <div className="preview-section-title-container">
-                  {/* <SectionIcon className="section-item-icon" /> */}
-                  <div className="preview-section-item-title">
-                    {section.title}
-                  </div>
-                </div>
-                <div style={{ position: 'relative' }}>
-                  {section.isRepeatable && edit && (
-                    <Tooltip title="Duplicate Section">
-                      <Button
-                        className="repeat-section-btn"
-                        label={repeatLabel ?? 'Repeat Section'}
-                        onClick={() => handleConfirmDuplicate(index)}
-                      ></Button>
-                    </Tooltip>
-                  )}
-                  {section.isDuplicate && edit && (
-                    <Tooltip title="Remove Section">
-                      <span
-                        style={{ color: '#e65f5f' }}
-                        className="remove-section-btn"
-                        onClick={() => handleConfirmRemove(section.id)}
-                      >
-                        <DeleteIcon />
-                      </span>
-                    </Tooltip>
-                  )}
-                </div>
-              </div>
-              {section.fields.map((field: any) => (
-                <div key={field.id}>
-                  <div className="preview-question-title-container">
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                      {/* <Question className="section-item-icon" /> */}
-                      <div className="section-field-item-title">
-                        {field.fieldTitle}
+          {sections.map(
+            (section: any, index: number) =>
+              !section.parentId && (
+                <div key={section.id} className="preview-section">
+                  <div className="preview-section-head-container ">
+                    <div className="preview-section-title-container">
+                      {/* <SectionIcon className="section-item-icon" /> */}
+                      <div className="preview-section-item-title">
+                        {section.title}
                       </div>
                     </div>
-                    <div
-                      className="preview-section-field"
-                      style={{ maxWidth: 350 }}
-                    >
-                      <SwitchComponents
-                        field={field}
-                        errors={errors[field.id]?.message}
-                        editable={edit}
-                      />
+                    <div style={{ position: 'relative' }}>
+                      {section.isRepeatable && edit && (
+                        <Tooltip title="Duplicate Section">
+                          <Button
+                            className="repeat-section-btn"
+                            label={repeatLabel ?? 'Repeat Section'}
+                            onClick={() => handleConfirmDuplicate(index)}
+                          ></Button>
+                        </Tooltip>
+                      )}
+                      {section.isDuplicate && edit && (
+                        <Tooltip title="Remove Section">
+                          <span
+                            style={{ color: '#e65f5f' }}
+                            className="remove-section-btn"
+                            onClick={() => handleConfirmRemove(section.id)}
+                          >
+                            <DeleteIcon />
+                          </span>
+                        </Tooltip>
+                      )}
                     </div>
                   </div>
+
+                  {section.fields.map((field: any) => (
+                    <div key={field.id}>
+                      <div className="preview-question-title-container">
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          {/* <Question className="section-item-icon" /> */}
+                          <div className="section-field-item-title">
+                            {field.fieldTitle}
+                          </div>
+                        </div>
+                        <div
+                          className="preview-section-field"
+                          style={{ maxWidth: 350 }}
+                        >
+                          <SwitchComponents
+                            field={field}
+                            errors={errors[field.id]?.message}
+                            editable={edit}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {renderChildren(section.id)}
                 </div>
-              ))}
-            </div>
-          ))}
+              )
+          )}
         </FormProvider>
       ) : (
         !isLoading && (
