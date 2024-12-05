@@ -153,7 +153,7 @@ const DynamicForm: React.FC<Props> = ({
               {/* <SectionIcon className="section-item-icon" /> */}
               <div className="preview-section-item-title child-section-title">{`${
                 section.title
-              } ${index + 1}`}</div>
+              } ${index + 2}`}</div>
             </div>
             <div style={{ position: 'relative' }}>
               {section.isDuplicate && edit && (
@@ -194,6 +194,11 @@ const DynamicForm: React.FC<Props> = ({
         </div>
       ));
   };
+  const handleReturnTitle = (section: any) => {
+    return sections?.find((s: any) => s.parentId === section.id)
+      ? `${section.title} 1`
+      : section.title;
+  };
   return (
     <div
       className={
@@ -228,7 +233,7 @@ const DynamicForm: React.FC<Props> = ({
                     <div className="preview-section-title-container">
                       {/* <SectionIcon className="section-item-icon" /> */}
                       <div className="preview-section-item-title">
-                        {section.title}
+                        {handleReturnTitle(section)}
                       </div>
                     </div>
                     <div style={{ position: 'relative' }}>
