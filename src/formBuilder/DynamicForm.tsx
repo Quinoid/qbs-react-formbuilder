@@ -33,6 +33,7 @@ type Props = {
   ) => Promise<boolean>;
   updateFormSection?: (data: any, msg?: string) => void;
 };
+let updateKey = 0;
 const DynamicForm: React.FC<Props> = ({
   formContent,
   updateFormContent,
@@ -98,6 +99,7 @@ const DynamicForm: React.FC<Props> = ({
 
   const handleReset = () => {
     methods.reset(getInitialData());
+    updateKey++;
     setEdit(false);
   };
   const handleAddSection = (sectionIndex: number) => {
@@ -199,35 +201,47 @@ const DynamicForm: React.FC<Props> = ({
       ? `${section.title} 1`
       : section.title;
   };
+  const handleIsSectionFieldsEmpty = (section: any) => {
+    return section.fields.length === 0;
+  };
   return (
     <div
       className={
         sections?.length > 0 ? 'preview-container' : 'preview-container-empty'
       }
     >
-      <div className="section-header">
-        <span className="section-header-title">
-          {formTitle ?? 'Data Collection Form'}
-        </span>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          {edit ? (
-            <>
-              <Button label="Save" onClick={methods.handleSubmit(updateForm)} />
-              <Button label="Cancel" type="secondary" onClick={handleReset} />
-            </>
-          ) : (
-            sections.length > 0 && (
-              <Button label="Edit" onClick={() => setEdit(true)} />
-            )
-          )}
+      {sections?.length > 0 && (
+        <div className="section-header">
+          <span className="section-header-title">
+            {formTitle ?? 'Data Collection Form'}
+          </span>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {edit ? (
+              <>
+                <Button
+                  label="Save"
+                  onClick={methods.handleSubmit(updateForm)}
+                />
+                <Button label="Cancel" type="secondary" onClick={handleReset} />
+              </>
+            ) : (
+              sections.length > 0 && (
+                <Button label="Edit" onClick={() => setEdit(true)} />
+              )
+            )}
+          </div>
         </div>
-      </div>
-      {sectionInfo && <div className=" section-info">{sectionInfo}</div>}
+      )}
+
+      {sectionInfo && sections?.length > 0 && (
+        <div className=" section-info">{sectionInfo}</div>
+      )}
       {sections.length > 0 ? (
         <FormProvider {...methods}>
           {sections.map(
             (section: any, index: number) =>
-              !section.parentId && (
+              !section.parentId &&
+              !handleIsSectionFieldsEmpty(section) && (
                 <div key={section.id} className="preview-section">
                   <div className="preview-section-head-container ">
                     <div className="preview-section-title-container">
@@ -274,6 +288,7 @@ const DynamicForm: React.FC<Props> = ({
                           style={{ maxWidth: 350 }}
                         >
                           <SwitchComponents
+                            key={updateKey}
                             field={field}
                             errors={errors[field.id]?.message}
                             editable={edit}

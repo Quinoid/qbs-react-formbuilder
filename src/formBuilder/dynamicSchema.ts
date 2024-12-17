@@ -82,7 +82,7 @@ export const generateDynamicSchema = (sections: Section[]) => {
                         field.customErrorMessage !== ''
                           ? field.customErrorMessage
                           : `File type must be one of the following: ${field.fileTypes
-                              ?.map((type) => type.value)
+                              ?.map((type) => type.label)
                               .join(', ')}`,
                     }
                   ),

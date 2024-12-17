@@ -33,13 +33,16 @@ const FileUpload: React.FC<FileUploadProps> = ({
     if (selectedFile) {
       // Validate file type
       if (!allowedFileTypes.includes(selectedFile.type)) {
-        const values = allowedFileTypes?.map((allowed) =>
-          fileTypes.map((type) => (type.value === allowed ? type.label : null))
-        );
-        console.log(values);
-        setError(
-          `File type not allowed. Allowed types: ${allowedFileTypes.join(', ')}`
-        );
+        const values = allowedFileTypes
+          ?.map((allowed) =>
+            fileTypes.map((type) =>
+              type.value === allowed ? type.label : null
+            )
+          )
+          .flat() // Flatten the nested arrays if `fileTypes` has multiple matches
+          .filter((value) => value !== null); // Remove null values
+
+        setError(`File type not allowed. Allowed types: ${values.join(', ')}`);
         return;
       }
 

@@ -35,6 +35,7 @@ const SwitchComponents: React.FC<Props> = React.memo(
           <TextField
             disabled={!editable}
             type={field.fieldType}
+            placeholder="Enter your description here..."
             {...register(field.id, {
               setValueAs: (value) =>
                 typeof value === 'string' ? value.trimStart() : value,
@@ -48,6 +49,7 @@ const SwitchComponents: React.FC<Props> = React.memo(
           <TextField
             disabled={!editable}
             type={field.fieldType}
+            placeholder="Enter your value here..."
             {...register(field.id, {
               setValueAs: (value) =>
                 typeof value === 'string' && value.trim() !== ''
@@ -119,6 +121,7 @@ const SwitchComponents: React.FC<Props> = React.memo(
         return (
           <TextField
             disabled={!editable}
+            placeholder="Enter your description here..."
             type="text"
             {...register(field.id, {
               setValueAs: (value) =>
