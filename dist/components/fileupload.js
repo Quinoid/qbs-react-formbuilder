@@ -41,9 +41,8 @@ onFileChange, errors, disabled, value, name, }) => {
         if (selectedFile) {
             // Validate file type
             if (!allowedFileTypes.includes(selectedFile.type)) {
-                const values = allowedFileTypes === null || allowedFileTypes === void 0 ? void 0 : allowedFileTypes.map((allowed) => fileTypes.map((type) => (type.value === allowed ? type.label : null)));
-                console.log(values);
-                setError(`File type not allowed. Allowed types: ${allowedFileTypes.join(', ')}`);
+                const values = allowedFileTypes === null || allowedFileTypes === void 0 ? void 0 : allowedFileTypes.map((allowed) => fileTypes.map((type) => type.value === allowed ? type.label : null)).flat().filter((value) => value !== null); // Remove null values
+                setError(`File type not allowed. Allowed types: ${values.join(', ')}`);
                 return;
             }
             // Validate file size

@@ -55,7 +55,7 @@ const generateDynamicSchema = (sections) => {
                                 message: field.customErrorMessage &&
                                     field.customErrorMessage !== ''
                                     ? field.customErrorMessage
-                                    : `File type must be one of the following: ${(_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value).join(', ')}`,
+                                    : `File type must be one of the following: ${(_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.label).join(', ')}`,
                             }),
                             zod_1.z.string(),
                             zod_1.z.object({

@@ -47,11 +47,11 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
     const watchedFileValue = (0, react_hook_form_1.useWatch)({ name: field.id });
     switch (field.fieldType) {
         case 'text':
-            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id, {
+            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType, placeholder: "Enter your description here..." }, register(field.id, {
                 setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
             }), { error: errors })));
         case 'number':
-            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType }, register(field.id, {
+            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: field.fieldType, placeholder: "Enter your value here..." }, register(field.id, {
                 setValueAs: (value) => typeof value === 'string' && value.trim() !== ''
                     ? parseInt(value.trimStart(), 10)
                     : value
@@ -68,7 +68,7 @@ const SwitchComponents = react_1.default.memo(({ field, errors, editable }) => {
                     return (react_1.default.createElement(fileupload_1.default, { key: field.id, onFileChange: (file) => onFileChange(file, field.id), errors: errors, name: field.id, maxSize: field.fileSize, disabled: !editable, value: watchedFileValue, allowedFileTypes: (_a = field.fileTypes) === null || _a === void 0 ? void 0 : _a.map((type) => type.value) }));
                 } }));
         default:
-            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, type: "text" }, register(field.id, {
+            return (react_1.default.createElement(Textfield_1.default, Object.assign({ disabled: !editable, placeholder: "Enter your description here...", type: "text" }, register(field.id, {
                 setValueAs: (value) => typeof value === 'string' ? value.trimStart() : value,
             }), { error: errors })));
     }
