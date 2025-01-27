@@ -13,7 +13,7 @@ export const formSections: Section[] = [
         fieldType: 'date',
         fileTypes: [],
         fieldTitle: 'Your Birthday?',
-        customErrorMessage: '',
+        customErrorMessage: 'sdfsfsfsd',
       },
       {
         id: '1730275659290',

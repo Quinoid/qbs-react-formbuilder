@@ -175,7 +175,9 @@ const DynamicForm = ({ formContent, updateFormContent, formValues, formTitle, up
                 return (react_1.default.createElement("div", { key: field.id },
                     react_1.default.createElement("div", { className: "preview-question-title-container" },
                         react_1.default.createElement("div", { style: { display: 'flex', gap: '10px' } },
-                            react_1.default.createElement("div", { className: "section-field-item-title" }, field.fieldTitle)),
+                            react_1.default.createElement("div", { className: "section-field-item-title" },
+                                field.fieldTitle,
+                                field.required ? (react_1.default.createElement("span", { className: "qbs-textfield-error" }, ' *')) : (''))),
                         react_1.default.createElement("div", { className: "preview-section-field", style: { maxWidth: 350 } },
                             react_1.default.createElement(SwitchComponents_1.default, { key: updateKey, field: field, errors: (_a = errors[field.id]) === null || _a === void 0 ? void 0 : _a.message, editable: edit })))));
             }),

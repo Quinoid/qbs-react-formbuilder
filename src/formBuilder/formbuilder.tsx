@@ -171,6 +171,7 @@ const FormBuilder: React.FC<Props> = ({
           ? {
               ...sect,
               fields: [
+                ...sect.fields,
                 {
                   ...data,
                   id:
@@ -178,7 +179,6 @@ const FormBuilder: React.FC<Props> = ({
                       ? `file-${Date.now().toString()}`
                       : Date.now().toString(),
                 },
-                ...sect.fields,
               ],
             }
           : sect

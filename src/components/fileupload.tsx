@@ -32,8 +32,17 @@ const FileUpload: React.FC<FileUploadProps> = ({
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       // Validate file type
-      if (!allowedFileTypes.includes(selectedFile.type)) {
-        const values = allowedFileTypes
+      let customAllowedFileTypes = [...allowedFileTypes];
+
+      // Conditionally include DOCX if DOC is present
+      if (customAllowedFileTypes.includes('application/msword')) {
+        customAllowedFileTypes.push(
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        );
+      }
+
+      if (!customAllowedFileTypes.includes(selectedFile.type)) {
+        const values = customAllowedFileTypes
           ?.map((allowed) =>
             fileTypes.map((type) =>
               type.value === allowed ? type.label : null
@@ -67,23 +76,41 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const handleRemoveFile = () => {
     setFile(null);
     setError(null);
-    onFileChange(null);
+    onFileChange(undefined);
   };
-
+  const values = allowedFileTypes
+    ?.map((allowed) =>
+      fileTypes.map((type) => (type.value === allowed ? type.label : null))
+    )
+    .flat() // Flatten the nested arrays if `fileTypes` has multiple matches
+    .filter((value) => value !== null);
   return (
     <div className="file-upload-container">
+      <span
+        style={{
+          color: 'rgb(108 108 112)',
+          fontSize: '12px',
+          paddingTop: '5px',
+          paddingBottom: '5px',
+        }}
+      >
+        {`Upload a file (${values?.join(', ')} ). Max Size ${maxSize} MB`}
+      </span>
+
       <label
         htmlFor={name}
         className={`file-upload-label ${disabled ? 'disabled' : ''}`}
       >
         <span className="upload-icon">📁</span>
-        {/* Replace with your custom icon */}
         <span className="upload-text">
           {file || value ? 'Change File' : 'Upload File'}
         </span>
+        {/* Replace with your custom icon */}
       </label>
+
       <input
         id={name}
+        key={file?.name}
         type="file"
         name={name}
         onChange={handleFileChange}

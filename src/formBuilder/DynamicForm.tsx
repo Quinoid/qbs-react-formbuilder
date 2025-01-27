@@ -61,6 +61,7 @@ const DynamicForm: React.FC<Props> = ({
   useEffect(() => {
     setSections(formContent);
   }, [formContent]);
+
   type FormSchema = z.infer<typeof schema>;
   const methods = useForm<FormSchema>({
     resolver: zodResolver(schema),
@@ -143,7 +144,6 @@ const DynamicForm: React.FC<Props> = ({
     setIsRemoveOpen(true);
     setCurrentSectionId(sectionId);
   };
-
   const { errors } = methods.formState;
   const renderChildren = (parentId: string) => {
     return sections
@@ -281,6 +281,13 @@ const DynamicForm: React.FC<Props> = ({
                           {/* <Question className="section-item-icon" /> */}
                           <div className="section-field-item-title">
                             {field.fieldTitle}
+                            {field.required ? (
+                              <span className="qbs-textfield-error">
+                                {' *'}
+                              </span>
+                            ) : (
+                              ''
+                            )}
                           </div>
                         </div>
                         <div

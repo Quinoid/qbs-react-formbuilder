@@ -65,7 +65,12 @@ const ExpandableTextarea = forwardRef<
       <div className="textfield-container">
         {label && (
           <label className="textfield-label">
-            {label} {`${required ? '*' : ''}`}
+            {label}
+            {required ? (
+              <span className="qbs-textfield-error">{' *'}</span>
+            ) : (
+              ''
+            )}
           </label>
         )}{' '}
         <textarea

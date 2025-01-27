@@ -40,8 +40,13 @@ onFileChange, errors, disabled, value, name, }) => {
         const selectedFile = (_a = event.target.files) === null || _a === void 0 ? void 0 : _a[0];
         if (selectedFile) {
             // Validate file type
-            if (!allowedFileTypes.includes(selectedFile.type)) {
-                const values = allowedFileTypes === null || allowedFileTypes === void 0 ? void 0 : allowedFileTypes.map((allowed) => fileTypes.map((type) => type.value === allowed ? type.label : null)).flat().filter((value) => value !== null); // Remove null values
+            let customAllowedFileTypes = [...allowedFileTypes];
+            // Conditionally include DOCX if DOC is present
+            if (customAllowedFileTypes.includes('application/msword')) {
+                customAllowedFileTypes.push('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            }
+            if (!customAllowedFileTypes.includes(selectedFile.type)) {
+                const values = customAllowedFileTypes === null || customAllowedFileTypes === void 0 ? void 0 : customAllowedFileTypes.map((allowed) => fileTypes.map((type) => type.value === allowed ? type.label : null)).flat().filter((value) => value !== null); // Remove null values
                 setError(`File type not allowed. Allowed types: ${values.join(', ')}`);
                 return;
             }
@@ -64,13 +69,20 @@ onFileChange, errors, disabled, value, name, }) => {
     const handleRemoveFile = () => {
         setFile(null);
         setError(null);
-        onFileChange(null);
+        onFileChange(undefined);
     };
+    const values = allowedFileTypes === null || allowedFileTypes === void 0 ? void 0 : allowedFileTypes.map((allowed) => fileTypes.map((type) => (type.value === allowed ? type.label : null))).flat().filter((value) => value !== null);
     return (react_1.default.createElement("div", { className: "file-upload-container" },
+        react_1.default.createElement("span", { style: {
+                color: 'rgb(108 108 112)',
+                fontSize: '12px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+            } }, `Upload a file (${values === null || values === void 0 ? void 0 : values.join(', ')} ). Max Size ${maxSize} MB`),
         react_1.default.createElement("label", { htmlFor: name, className: `file-upload-label ${disabled ? 'disabled' : ''}` },
             react_1.default.createElement("span", { className: "upload-icon" }, "\uD83D\uDCC1"),
             react_1.default.createElement("span", { className: "upload-text" }, file || value ? 'Change File' : 'Upload File')),
-        react_1.default.createElement("input", { id: name, type: "file", name: name, onChange: handleFileChange, accept: allowedFileTypes.join(','), disabled: disabled, style: { display: 'none' } }),
+        react_1.default.createElement("input", { id: name, key: file === null || file === void 0 ? void 0 : file.name, type: "file", name: name, onChange: handleFileChange, accept: allowedFileTypes.join(','), disabled: disabled, style: { display: 'none' } }),
         file ? (react_1.default.createElement("div", { className: "uploaded-file-info" },
             react_1.default.createElement("p", null,
                 "Uploaded file: ",

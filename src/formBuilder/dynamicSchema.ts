@@ -20,9 +20,7 @@ export const generateDynamicSchema = (sections: Section[]) => {
         switch (field.fieldType) {
           case 'text':
           case 'textArea':
-            fieldSchema = z
-              .string()
-              .regex(/^\S.*$/, 'Leading spaces are not allowed');
+            fieldSchema = z.string();
             if (field.maxLength && field.maxLength > 0) {
               fieldSchema = fieldSchema.max(
                 field.maxLength,

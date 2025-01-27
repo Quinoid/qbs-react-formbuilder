@@ -16,8 +16,8 @@ const Popup = ({ isOpen, onClose, onSubmit, title, children, actionLabel = 'Crea
                 react_1.default.createElement("button", { className: "popup-close", onClick: onClose, "aria-label": "Close" }, "\u00D7")),
             react_1.default.createElement("div", { className: "popup-body" }, children),
             react_1.default.createElement("div", { className: " popup-action" },
-                react_1.default.createElement(Button_1.default, { label: actionLabel, onClick: onSubmit }),
-                secondaryAction))));
+                secondaryAction,
+                react_1.default.createElement(Button_1.default, { label: actionLabel, onClick: onSubmit })))));
 };
 exports.default = Popup;
 //# sourceMappingURL=DialogPopup.js.map

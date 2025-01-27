@@ -63,8 +63,7 @@ const ExpandableTextarea = (0, react_1.forwardRef)((_a, ref) => {
     return (react_1.default.createElement("div", { className: "textfield-container" },
         label && (react_1.default.createElement("label", { className: "textfield-label" },
             label,
-            " ",
-            `${required ? '*' : ''}`)),
+            required ? (react_1.default.createElement("span", { className: "qbs-textfield-error" }, ' *')) : (''))),
         ' ',
         react_1.default.createElement("textarea", Object.assign({ ref: (node) => {
                 textareaRef.current = node; // Assign the ref

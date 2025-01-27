@@ -1,8 +1,10 @@
 // DatePicker.tsx
 import React from 'react';
 import DatePicker from 'react-datepicker';
+
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
+import { CloseIcon } from './Icons';
+
 type DatePickerProps = {
   label?: string;
   selectedDate?: Date | null;
@@ -22,23 +24,39 @@ const CustomDatePicker: React.FC<DatePickerProps> = ({
   disabled,
   error,
 }) => {
-  const value = selectedDate ? moment(selectedDate).format('DD-MM-YYYY') : '';
+  const value =
+    selectedDate && selectedDate !== null ? new Date(selectedDate) : undefined;
   return (
     <div className="date-picker-component">
       <label className="date-picker-label">
-        {label} {required && <span>*</span>}
+        {label}
+        {required ? (
+          <span className="qbs-textfield-error"> {' *'}</span>
+        ) : (
+          ''
+        )}{' '}
       </label>
       <DatePicker
         onChange={onChange}
         name={name}
         disabled={disabled}
-        dateFormat="dd/MM/yyyy"
+        showYearDropdown
+        selected={value}
+        yearDropdownItemNumber={50}
+        scrollableYearDropdown
+        clearButtonClassName="clear-date-btn"
+        dateFormat="dd-MM-yyyy"
         placeholderText="Select a date"
-        className={`date-picker-input ${
+        className={`date-picker-input w-full ${
           error ? 'date-picker-input-error' : ''
         }`}
-        value={value}
       />
+      {value && !disabled && (
+        <span className="clear-date-btn" onClick={() => onChange(null)}>
+          <CloseIcon />
+        </span>
+      )}
+
       {error && <span className="qbs-textfield-error">{error}</span>}
     </div>
   );

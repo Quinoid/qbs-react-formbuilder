@@ -34,8 +34,8 @@ const Popup: React.FC<PopupProps> = ({
         </div>
         <div className="popup-body">{children}</div>
         <div className=" popup-action">
-          <Button label={actionLabel} onClick={onSubmit} />
           {secondaryAction}
+          <Button label={actionLabel} onClick={onSubmit} />
         </div>
       </div>
     </div>

@@ -128,6 +128,7 @@ const CreateField: React.FC<any> = ({
         <SelectField
           label="Select an option"
           required
+          disabled={edit}
           options={options}
           {...register('fieldType')}
           error={errors.fieldType?.message}
@@ -144,7 +145,7 @@ const CreateField: React.FC<any> = ({
                 setValueAs: (value) =>
                   typeof value === 'string' ? value.trimStart() : value,
               })}
-              label="Field Description"
+              label="Field Title"
               error={errors.fieldTitle?.message}
               placeholder="Enter your description here..."
               maxRows={3} // You can set max rows as needed

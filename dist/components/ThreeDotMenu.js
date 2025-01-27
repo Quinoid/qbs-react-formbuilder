@@ -50,10 +50,8 @@ const ThreeDotMenuDropdown = ({ options, handleMenuAction }) => {
     (0, react_1.useEffect)(() => {
         if (isOpen && buttonRef.current && menuRef.current) {
             const buttonRect = buttonRef.current.getBoundingClientRect();
-            const dropdownRect = menuRef.current.getBoundingClientRect();
             const spaceBelow = window.innerHeight - buttonRect.bottom;
             const spaceAbove = buttonRect.top;
-            console.log(spaceBelow, dropdownRect.height, spaceAbove, dropdownRect.height);
             if (spaceBelow > spaceAbove) {
                 setPosition('top');
             }

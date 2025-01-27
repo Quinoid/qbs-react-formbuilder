@@ -29,8 +29,7 @@ const TextField = (0, react_1.forwardRef)(({ label, placeholder, value, onChange
     return (react_1.default.createElement("div", { className: "textfield-container" },
         label && (react_1.default.createElement("label", { className: "textfield-label" },
             label,
-            " ",
-            `${required ? '*' : ''}`)),
+            required ? react_1.default.createElement("span", { className: "qbs-textfield-error" }, ' *') : '')),
         react_1.default.createElement("input", { type: type, className: `textfield-input ${error ? 'textfield-input-error' : ''}`, placeholder: placeholder, value: value, name: name, onChange: onChange, disabled: disabled, ref: ref }),
         error && react_1.default.createElement("span", { className: "qbs-textfield-error" }, error)));
 });

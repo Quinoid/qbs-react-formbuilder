@@ -16,7 +16,11 @@ export default function App() {
       <FormBuilder formContent={formSections} updateFormContent={() => {}} />
       <DynamicForm
         formContent={formSections}
-        formValues={{ 1730275659290: 20, 1730275681654: 'newww' }}
+        formValues={{
+          1730275659290: 20,
+          1730275681654: 'newww',
+          1730275740775: '2022-01-01',
+        }}
       />
     </div>
   );

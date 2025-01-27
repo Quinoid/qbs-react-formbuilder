@@ -146,10 +146,10 @@ const FormBuilder = ({ formContent, updateFormContent, isLoading, }) => {
         else {
             const result = sections.map((sect) => sect.id === (currentSection === null || currentSection === void 0 ? void 0 : currentSection.id)
                 ? Object.assign(Object.assign({}, sect), { fields: [
+                        ...sect.fields,
                         Object.assign(Object.assign({}, data), { id: data.fieldType === 'file'
                                 ? `file-${Date.now().toString()}`
                                 : Date.now().toString() }),
-                        ...sect.fields,
                     ] }) : sect);
             setSections(result);
             setOpenField(false);
